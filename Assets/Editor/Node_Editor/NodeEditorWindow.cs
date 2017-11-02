@@ -67,15 +67,15 @@ namespace NodeEditorFramework.Standard
 		/// <summary>
 		/// Opens the Node Editor window and loads the last session
 		/// </summary>
-		[MenuItem("Snap/Node Editor")]
+		[MenuItem("Snapper/Node Editor")]
 		public static NodeEditorWindow OpenNodeEditor () 
 		{
 			_editor = GetWindow<NodeEditorWindow>();
 			_editor.minSize = new Vector2(800, 600);
 			NodeEditor.ReInit (false);
 
-			Texture iconTexture = (Texture)EditorGUIUtility.Load("Icons/Snap.png"); //ResourceManager.LoadTexture (EditorGUIUtility.isProSkin? "Textures/Icon_Dark.png" : "Textures/Icon_Light.png");
-			_editor.titleContent = new GUIContent ("Snap", iconTexture);
+			Texture iconTexture = (Texture)EditorGUIUtility.Load("Icons/Snapper.png"); //ResourceManager.LoadTexture (EditorGUIUtility.isProSkin? "Textures/Icon_Dark.png" : "Textures/Icon_Light.png");
+			_editor.titleContent = new GUIContent ("Snapper", iconTexture);
 
 			return _editor;
 		}

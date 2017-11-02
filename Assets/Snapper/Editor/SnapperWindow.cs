@@ -13,6 +13,7 @@ using UnityEngine.Video;
 using UnityEngine.VR;
 using UnityEditor;
 using System.Linq;
+using Polyglot;
 
 using UnityEditorInternal;
 //using UnityEngine.Experimental.UIElements;
@@ -21,7 +22,7 @@ using UnityEditorInternal;
 using UnityEditor.ProjectWindowCallback;
 
 [InitializeOnLoad]
-public class SnapWindow : EditorWindow
+public class SnapperWindow : EditorWindow
 {
     public static int SelGridInt
     {
@@ -66,7 +67,7 @@ public class SnapWindow : EditorWindow
     public Rect sideWindowRect { get { return new Rect(position.width - sideWindowWidth, sideWindowStartHeight, sideWindowWidth, position.height); } }
     public Rect canvasWindowRect { get { return new Rect(0, headingsRect.height, position.width - sideWindowWidth, position.height); } }
 
-	private float hierarchyWidth
+	/* private float hierarchyWidth
 	{
 		get
 		{
@@ -83,14 +84,14 @@ public class SnapWindow : EditorWindow
 	}
 
 	[SerializeField]
-	private SplitterState m_HorizontalSplitter;
+	private SplitterState m_HorizontalSplitter; */
 
 	[System.NonSerialized]
 	private Rect m_Position;
 
 	Color color;
 
-    static SnapWindow()
+    static SnapperWindow()
     {
         EditorApplication.update += UpdateContents;
     }
@@ -101,25 +102,25 @@ public class SnapWindow : EditorWindow
         //GenerateHeadings();
     }
 
-    [MenuItem("Snap/Snap Old &s")]
+    [MenuItem("Snapper/Snapper Old &s")]
     public static void ShowWindow()
     {
-        // Shows an instance of custom window, SnapWindow
-        SnapWindow window = GetWindow<SnapWindow>();
+        // Shows an instance of custom window, SnapperWindow
+        SnapperWindow window = GetWindow<SnapperWindow>();
         // Loads an icon from an image stored at the specified path
-        Texture icon = (Texture)EditorGUIUtility.Load("Icons/Snap.png");
-        // Create the instance of GUIContent to assign to the window. Gives the title "SnapWindow" and the icon
-        GUIContent titleContent = new GUIContent("Snap", icon);
+        Texture icon = (Texture)EditorGUIUtility.Load("Icons/Snapper.png");
+        // Create the instance of GUIContent to assign to the window. Gives the title "SnapperWindow" and the icon
+        GUIContent titleContent = new GUIContent("Snapper", icon);
         window.minSize = new Vector2(650, 200);
         window.titleContent = titleContent;
     }
 
-    void OnEnable()
+	/*void OnEnable()
     {
 		base.hideFlags = HideFlags.HideAndDontSave;
 		this.InitializeHorizontalSplitter();
 
-		/*AnimEditor.s_AnimationWindows.Add(this);
+		AnimEditor.s_AnimationWindows.Add(this);
 		if (this.m_State == null)
 		{
 			this.m_State = (ScriptableObject.CreateInstance(typeof(AnimationWindowState)) as AnimationWindowState);
@@ -141,30 +142,31 @@ public class SnapWindow : EditorWindow
 		expr_E9.curvesUpdated = (CurveEditor.CallbackFunction)Delegate.Combine(expr_E9.curvesUpdated, new CurveEditor.CallbackFunction(this.SaveChangedCurvesFromCurveEditor));
 		this.m_CurveEditor.OnEnable();*/
 
-		/*// Shows an instance of custom window, SnapWindow
-        SnapWindow window = GetWindow<SnapWindow>("Snap");
-        // Loads an icon from an image stored at the specified path
-        Texture icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor Default Resources/Icons/Snap.png");
-        // Create the instance of GUIContent to assign to the window. Gives the title "SnapWindow" and the icon
-        GUIContent titleContent = new GUIContent("SnapWindow", icon);
-        window.titleContent = titleContent;*/
-	}
+	/*// Shows an instance of custom window, SnapperWindow
+	SnapperWindow window = GetWindow<SnapperWindow>("Snapper");
+	// Loads an icon from an image stored at the specified path
+	Texture icon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Editor Default Resources/Icons/Snapper.png");
+	// Create the instance of GUIContent to assign to the window. Gives the title "SnapperWindow" and the icon
+	GUIContent titleContent = new GUIContent("SnapperWindow", icon);
+	window.titleContent = titleContent;* /
+}*/
 
 	#region GUI
 
 	void OnGUI()
     {
-        UnityEngine.Profiling.Profiler.BeginSample("Snap");
+        UnityEngine.Profiling.Profiler.BeginSample("Snapper");
         UISystemProfilerApi.BeginSample(UISystemProfilerApi.SampleType.Render);
 		//Event currentEvent = Event.current;
 
 		GUISkin _editorSkin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
 
 		//GUILayout.BeginArea(headingsRect, GUI.skin.box);
+		DrawMenu();
 		DrawHeadings();
         //GUILayout.EndArea();
 
-        GUILayout.BeginHorizontal("Box");//, GUILayout.Width(GetWindow<SnapWindow>().maxSize.x - 8));
+        GUILayout.BeginHorizontal("Box");//, GUILayout.Width(GetWindow<SnapperWindow>().maxSize.x - 8));
         //EditorGUILayout.Space();
 
         DrawBlocks();
@@ -192,7 +194,7 @@ public class SnapWindow : EditorWindow
 		GUILayout.Label("", _editorSkin.GetStyle("MeTransPlayhead"));
 		GUILayout.Label(_editorSkin.GetStyle("MeTransPlayhead").normal.background);
 
-        GUILayout.BeginHorizontal();
+		EditorGUILayout.BeginHorizontal();
 		GUILayout.Button(EditorGUIUtility.IconContent("Animation.EventMarker", "|Add."));
 		GUILayout.Button(EditorGUIUtility.IconContent("LookDevClose", "|Add."));
 		GUILayout.Button(EditorGUIUtility.IconContent("renderdoc", "Capture|Capture the current view and open in RenderDoc."));
@@ -203,9 +205,9 @@ public class SnapWindow : EditorWindow
 		GUILayout.Button(EditorGUIUtility.IconContent("LookDevSideBySide", "|Add."));
 		GUILayout.Button(EditorGUIUtility.IconContent("Toolbar Plus", "|Add."));
 		GUILayout.Button(EditorGUIUtility.IconContent("Toolbar Minus", "|Minus."));
-        GUILayout.EndHorizontal();
+		EditorGUILayout.EndHorizontal();
 
-		using (new EditorGUI.DisabledScope(false))
+		/*using (new EditorGUI.DisabledScope(false))
 		{
 			GUILayout.BeginHorizontal();// new GUILayoutOption[0]);
 			SplitterGUILayout.BeginHorizontalSplit(this.m_HorizontalSplitter, new GUILayoutOption[0]);
@@ -216,15 +218,42 @@ public class SnapWindow : EditorWindow
 			GUILayout.EndVertical();
 			SplitterGUILayout.EndHorizontalSplit();
 			GUILayout.EndHorizontal();
-		}
+		}*/
 
-		GUILayout.BeginHorizontal();
+		EditorGUILayout.BeginHorizontal();
 		GUILayout.Button(EditorGUIUtility.IconContent("GameObject Icon", "|Game Object."));
 		//GUILayout.Button(EditorResourcesUtility.emptyFolderIconName, "|Game Object"));
 		GUILayout.Button(EditorGUIUtility.IconContent("cs Script Icon", "|C# Script Icon."));
 		GUILayout.Button(EditorGUIUtility.IconContent("AnimatorController Icon", "|Add."));
 		GUILayout.Button(_editorSkin.GetStyle("MeTransPlayhead").normal.background);
-        GUILayout.EndHorizontal();
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.BeginHorizontal();
+		// TODO: remove later
+		System.Type[] categories = new System.Type[]// UnityEngine.Object[]
+        {   typeof(Mesh), typeof(ParticleSystem), typeof(Physics), typeof(Physics2D),
+			typeof(Behaviour), typeof(NavMeshAgent), typeof(AudioSource), typeof(VideoClip),
+			typeof(Renderer), typeof(LayoutElement), typeof(VRDevice), typeof(Network),
+			typeof(Transform), typeof(RectTransform), typeof(AudioLowPassFilter)
+		};
+
+		for (int i = 0; i < categories.Length; i++)
+		{
+			if (i == 6)//categories.Length * 0.5f)
+			{
+				EditorGUILayout.EndHorizontal();
+				EditorGUILayout.BeginHorizontal();
+			}
+			if (GUILayout.Button(EditorGUIUtility.ObjectContent(null, categories[i]).image))
+			{
+				Debug.Log(categories[i].Name + " Image."); //Debug.Log(nameof(categories[i]) + " Image");
+			}
+		}
+		/*if (GUILayout.Button(EditorGUIUtility.ObjectContent(null, typeof(Transform)).image))
+		{
+			Debug.Log("Transform Image");
+		}*/
+		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.EndVertical();
 
 		// Draw Side Window
@@ -327,11 +356,43 @@ public class SnapWindow : EditorWindow
         Repaint();
     }
 
+	void DrawMenu()
+	{
+		string[] menuItems = new string[] { "File", Localization.Get("MENU_LABEL_CONFIRM_BUTTON") };
+		EditorGUILayout.BeginHorizontal("Box");
+		GUILayout.Toolbar(SelGridInt, menuItems, EditorStyles.toolbar);
+
+		GUIContent currLangButtonContent = new GUIContent("\u25cc", "English"); //1F310
+		//prevLangButtonContent = new GUIContent("<", "Prev Lang"),
+		//nextLangButtonContent = new GUIContent(">", "Next Lang");
+
+		GUILayoutOption miniButtonWidth = GUILayout.Width(50f);
+
+		var loc = Localization.Instance;
+		EditorGUILayout.BeginHorizontal();
+		if (GUILayout.Button(EditorGUIUtility.IconContent("Animation.PrevKey", "|Prev Lang."), EditorStyles.miniButtonLeft, miniButtonWidth))
+		{
+			loc.SelectLanguage(loc.SelectedLanguage - 1);
+		}
+		if (GUILayout.Button(currLangButtonContent, EditorStyles.miniButtonMid, miniButtonWidth))
+		{
+			loc.SelectLanguage(Language.English);
+		}
+		if (GUILayout.Button(EditorGUIUtility.IconContent("Animation.NextKey", "|Next Lang."), EditorStyles.miniButtonRight, miniButtonWidth))
+		{
+			loc.SelectLanguage(loc.SelectedLanguage + 1);
+		}
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.EndHorizontal();
+	}
+
     void DrawHeadings()
     {
         // Allows for nice layout for headings
         int buffer = 0;
         buffer = (selStrings.Length % 2 == 0) ? 0 : 1;
+
 
         EditorGUILayout.BeginVertical("Box");
         SelGridInt = GUILayout.SelectionGrid(SelGridInt, selStrings,
@@ -402,7 +463,7 @@ public class SnapWindow : EditorWindow
 
         color = EditorGUILayout.ColorField("Color", color);
 
-        if (GUILayout.Button("SNAP!"))
+        if (GUILayout.Button("Snapper!"))
         {
             Colorize();
         }
@@ -622,7 +683,7 @@ public class SnapWindow : EditorWindow
         }
     }
 
-	private void SynchronizeLayout()
+	/*private void SynchronizeLayout()
 	{
 		this.m_HorizontalSplitter.realSizes[1] = (int)Mathf.Min(this.m_Position.width - (float)this.m_HorizontalSplitter.realSizes[0], (float)this.m_HorizontalSplitter.realSizes[1]);
 		/*if (this.selectedItem != null && this.selectedItem.animationClip != null)
@@ -632,10 +693,10 @@ public class SnapWindow : EditorWindow
 		else
 		{
 			this.m_State.frameRate = 60f;
-		}*/
-	}
+		}* /
+}
 
-	private void Initialize()
+private void Initialize()
 	{
 		//AnimationWindowStyles.Initialize();
 		//this.InitializeHierarchy();
@@ -661,7 +722,7 @@ public class SnapWindow : EditorWindow
 		this.m_HorizontalSplitter.realSizes[1] = 300;
 	}
 
-	/*private void OverlayEventOnGUI()
+	private void OverlayEventOnGUI()
 	{
 		if (!this.m_State.animatorIsOptimized)
 		{

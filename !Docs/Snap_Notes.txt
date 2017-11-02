@@ -18,3 +18,139 @@
 ## TODO:
 - For _componentTypes, if the first letter of _componentNames[i] == prev, 
 continue checking the next letter until they don't match anymore - set the folder name to that string.
+- If the next _componentTypes contains folder name - add to that folder e.g. NavMeshAgent, OffMeshLink
+- Google Drive API https://developers.google.com/drive/  https://github.com/jgraph/drawio/search?l=JavaScript&q=google+dropbox&type=&utf8=%E2%9C%93
+
+https://docs.unity3d.com/ScriptReference/DragAndDrop.html 
+https://forum.unity3d.com/threads/drag-and-drop-in-the-editor-explanation.223242/
+using GUIContent = UnityEngine.GUIContent;
+http://catlikecoding.com/unity/tutorials/editor/
+http://catlikecoding.com/unity/tutorials/editor/custom-list/
+
+https://docs.unity3d.com/ScriptReference/MenuItem.html
+https://forum.unity3d.com/threads/unity-editor-scripting-keyboard-shortcuts.392877/
+https://docs.unity3d.com/ScriptReference/GL.html 
+https://docs.unity3d.com/ScriptReference/EditorGUIUtility.html
+https://docs.unity3d.com/ScriptReference/EditorGUIUtility.ObjectContent.html 
+https://docs.unity3d.com/ScriptReference/AssetPreview.GetAssetPreview.html 
+
+https://blogs.unity3d.com/2015/12/22/going-deep-with-imgui-and-editor-customization/?-808130765.1488444262
+
+https://docs.unity3d.com/ScriptReference/IMGUI.Controls.MultiColumnHeader.html
+https://forum.unity3d.com/threads/how-would-i-create-an-editorwindow-similar-to-animationcontroller.261606/
+https://www.reddit.com/r/Unity3D/comments/1s6czv/inspectorbutton_add_a_custom_button_to_your/ 
+
+https://docs.unity3d.com/2017.1/Documentation/Manual/30_search.html?q=UISystemProfilerApi 
+
+https://docs.unity3d.com/ScriptReference/Profiling.Profiler.html 
+
+Editor Icon View - VisibilityToggle, Icon.Mute, ObjectFieldMiniThumb, flow node 1 
+UnityEditor.EditorSettings.defaultBehaviorMode == UnityEditor.EditorBehaviorMode.Mode2D
+// Text Mesh Pro 
+https://forum.unity3d.com/threads/text-mesh-pro-the-ultimate-text-solution-for-unity-powerful-flexible-advanced-text-rendering.248636/page-11
+
+// Editor Scripting 
+https://forum.unity3d.com/threads/how-would-i-create-an-editorwindow-similar-to-animationcontroller.261606/ 
+https://www.reddit.com/r/Unity3D/search?q=editor+scripting&restrict_sr=on&sort=relevance&t=all
+https://unity3d.com/learn/tutorials/topics/scripting/creating-basic-editor-tools https://youtu.be/L24GKk1qQD4
+https://unity3d.com/learn/tutorials/topics/scripting/editor-scripting-intro
+https://unity3d.com/learn/tutorials/topics/interface-essentials/property-drawers-custom-inspectors https://youtu.be/-bxaYugwVL4
+https://www.reddit.com/r/Unity3D/comments/49xxzh/all_this_talk_of_custom_editors_is_great_but/ 
+https://www.reddit.com/r/Unity3D/comments/63zto5/working_on_a_course_about_unity_editor_scripting/
+Editor Icon Viewer https://www.reddit.com/r/Unity3D/comments/1jr1qf/editor_icon_viewer/ https://github.com/zaikman/UnityPublic/blob/master/EditorIconViewer.cs
+
+
+https://www.youtube.com/user/Unity3D/search?query=editor
+Unite 2011 - Intro to Editor Scripting https://youtu.be/6dnQX0ChOsA
+Unite 2012 - Advanced Editor Scripting https://youtu.be/itkm-emb5tg
+Unite 2013 - Advanced Editor Scripting https://youtu.be/t-wShOv8c1E
+Unite 2014 - Editor Scripting from the real world https://youtu.be/s1o0gZwJS-4
+
+Unite Europe 2016 - Editor Scripting for n00bs https://youtu.be/9bHzTDIJX_Q
+
+Unity Editor Scripting Tutorials - Amrit Choudhary https://www.youtube.com/playlist?list=PLs023Yclit4nom70pyx0wIxQLWf4Q7nIU
+
+https://github.com/Unity-Technologies
+https://unity3d.com/learn/tutorials/topics/scripting/localized-text-editor-script?playlist=17117 https://www.youtube.com/playlist?list=PLX2vGYjWbI0TWkV9aEYq93bOX2kwseqUT
+
+Jackpot! https://forum.unity3d.com/threads/simple-node-editor.189230/#post-2134738
+https://github.com/Seneral/Node_Editor_Framework
+https://github.com/Seneral/Node_Editor_Framework/blob/Examples/Dialogue-System/ExampleDialogSystem/Source/Manager/DialogBlackboard.cs
+https://github.com/MattRix/UnityDecompiled/tree/master/UnityEditor
+https://github.com/MattRix/UnityDecompiled/blob/82e03c823811032fd970ffc9a75246e95c626502/UnityEditor/UnityEditor/AnimatorInspector.cs
+https://github.com/zaikman/UnityPublic/blob/master/EditorIconViewer.cs 
+http://va.lent.in/unity-make-your-lists-functional-with-reorderablelist/ 
+
+#1 http://wiki.unity3d.com/index.php/FindObjects 
+http://wiki.unity3d.com/index.php/SelectAllOfType
+
+Basic https://forum.unity3d.com/threads/simple-node-editor.189230/
+https://github.com/ocornut/imgui/blob/master/imgui_demo.cpp
+
+// Blockly 
+Blockly Developer Registration  https://docs.google.com/forms/d/e/1FAIpQLSdgoOSdGZG7vwlzB3wisIXOeUYodDjBaYcSmSBPMdE_oUpxiA/viewform 
+https://blogs.unity3d.com/2016/09/20/teaching-unity-to-non-programmers-playground-project/
+snap.berkeley.edu
+https://scratch.mit.edu/developers 
+https://github.com/google/blockly https://github.com/LLK/scratch-blocks 
+https://docs.google.com/forms/d/e/1FAIpQLSdgoOSdGZG7vwlzB3wisIXOeUYodDjBaYcSmSBPMdE_oUpxiA/viewform 
+https://developers.google.com/blockly/ 
+https://developers.google.com/blockly/guides/get-started/web
+https://developers.google.com/blockly/guides/create-custom-blocks/blockly-developer-tools 
+https://developers.google.com/blockly/guides/modify/future
+Blockly: Using Block Based Coding in your App https://youtu.be/wDJua9hgyZM 
+https://blockly-demo.appspot.com/static/demos/storage/index.html 
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html
+https://groups.google.com/forum/#!searchin/blockly/unity%7Csort:relevance 
+https://groups.google.com/forum/#!searchin/blockly/unity%7Csort:relevance/blockly/ZB4eL6U-4lI/qGz5sNvTAAAJ
+https://groups.google.com/forum/#!searchin/blockly/unity|sort:relevance/blockly/sgtJmGJiCrw/ifvjSQIJl-8J 
+https://www.xda-developers.com/google-releases-blockly-1-0-for-android-and-ios/
+https://medium.com/ocadotechnology/unity-and-blockly-a-match-almost-made-in-heaven-ff2eafcdd220
+http://wiki.unity3d.com/index.php/Special_Folder_Names_in_your_Assets_Folder#.22WebPlayerTemplates.22
+Blox Visual Scripting https://www.assetstore.unity3d.com/en/#!/content/62473
+https://docs.unity3d.com/460/Documentation/Manual/UsingWebPlayertemplates.html 
+https://forum.unity3d.com/threads/how-to-integrate-unity-and-blockly.382626/
+https://github.com/ocadotechnology/rapid-router-unity/blob/86caaeec9acf90373b532b13b22f49f60b925739/Assets/VehicleMover.cs 
+
+Block Factory https://youtu.be/s2_xaEvcVI0
+Blockity - Peter Koch - https://youtu.be/Qq6xInFeIJo
+
+// Engine Type 
+C++ in Unity3D tutorial (C# Marshaling) Hardly Difficult - https://youtu.be/w3jGgTHJoCY 
+C# to Javascript Compiler implemented via Roslyn https://github.com/kswoll/WootzJs 
+
+// Reflection 
+C# Attributes and Reflection - Jamie King -  https://www.youtube.com/playlist?list=PLRwVmtr-pp05brRDYXh-OTAIi-9kYcw3r
+Not what I need  http://answers.unity3d.com/questions/898477/c-reflection-creating-categories.html 
+https://docs.unrealengine.com/latest/INT/GettingStarted/FromUnity/
+Part 53 C# Tutorial Reflection in C# YouTube https://youtu.be/MgyGXO0uZpw 
+Unity Reflection is Really Slow http://jacksondunstan.com/articles/2972 
+Easily “Compile Out” Function Calls http://jacksondunstan.com/articles/3530
+Unity Reflection is Really Slow http://jacksondunstan.com/articles/2972
+How to Write Faster Code Than 90% of Programmers http://jacksondunstan.com/articles/3860
+
+https://www.facebook.com/groups/IndieGameDevs/permalink/10154411092771573/?sw_fnr_id=3998147759&fnr_t=0 
+https://github.com/agens-no/PolyglotUnity 
+Polyglot Core Editing  https://docs.google.com/spreadsheets/d/1J9RWvlE5ma8EIDwV3-G5Ed58V2dIMax47HzLhNpNbWg/edit#gid=1730457672
+Common game localizations  https://docs.google.com/spreadsheets/d/135HgMYcRDt6vnJN0d-xFMEZUeWjVbc61ETf8uVwHERE/edit#gid=216491128
+
+// Serialisation/ Code Baking
+http://wiki.unity3d.com/index.php/Save_and_Load_from_XML
+http://wiki.unity3d.com/index.php/Save_and_Load_from_XML_U3_Collections 
+http://wiki.unity3d.com/index.php/CountLines  System.Text.StringBuilder, System.IO.StreamReader, 
+http://wiki.unity3d.com/index.php/SerializableDictionary
+
+// Create a string using the correct color that says 'PLAYER 1' etc based on the Snack's color and the player's number.
+        m_ColoredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(m_PlayerColor) + ">PLAYER " + m_PlayerNumber + "</color>";
+		
+https://docs.unity3d.com/ScriptReference/JsonUtility.html 
+https://docs.unity3d.com/Manual/JSONSerialization.html 
+https://docs.unity3d.com/Manual/webgl-interactingwithbrowserscripting.html 
+
+https://docs.unity3d.com/ScriptReference/WWW.html
+https://docs.unity3d.com/ScriptReference/Application.ExternalEval.html call JS
+https://docs.unity3d.com/ScriptReference/Application.ExternalCall.html (not this one?)
+
+https://developer.android.com/topic/instant-apps/index.html
+https://kotlinlang.org/docs/tutorials/kotlin-android.html 
+http://www.alanzucconi.com/2015/05/26/how-to-retrieve-all-the-images-from-a-website/ 

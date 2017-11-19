@@ -68,10 +68,16 @@
 <script src="https://blockly-demo.appspot.com/static/blocks/colour.js"></script>
 <script src="https://blockly-demo.appspot.com/static/blocks/variables.js"></script>
 <script src="https://blockly-demo.appspot.com/static/blocks/procedures.js"></script>
+
+<!--<script src="https://raw.github.com/eligrey/Blob.js/master/Blob.js"></script>-->
 <script>
 'use strict';
 var workspace = null;
 var fakeDragStack = [];
+
+/*$ = function(id) {
+  return document.getElementById(id);
+}*/
 
 function start() {
   setBackgroundColor();
@@ -127,7 +133,83 @@ function start() {
     logEvents(false);
   }
   taChange();
+
+  var js_options_form = document.getElementById("js-options"); //toCodeJs")
+  js_options_form.addEventListener("submit", function(event) {
+  	event.preventDefault();
+    //saveTextAs(Blockly['JavaScript'].workspaceToCode(workspace), "BlocklyMediator.txt");// .js + fileExtention);//, document.characterSet);
+    //downloadToUnity('BlocklyMediator.js', Blockly['JavaScript'].workspaceToCode(workspace));
+    // document.execCommand('copy'); // Wont work on Chrome 37
+    //window.prompt("Copy to clipboard: Ctrl+C, Enter", Blockly['JavaScript'].workspaceToCode(workspace));
+  }, false);
 }
+function downloadToUnity(filename, text){
+  var uriContent = "data:application/octet-stream," + encodeURIComponent(text);
+  // Open new window
+  var newWindow = window.open(uriContent, filename);//_self, filename);
+  newWindow.close();
+}
+function downloadHTML5(filename, text) {
+    //var path = '../Assets/StreamingAssets/';//'file:///Assets/StreamingAssets/';
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+
+// https://github.com/ChenWenBrian/FileSaver.js/blob/master/FileSaver.js
+/*var saveTextAs = saveTextAs
+|| (function (textContent, fileName, charset) {*/
+function saveTextAs(textContent, fileName, charset) {
+    fileName = fileName || 'download.txt';
+    charset = charset || 'utf-8';
+    textContent = (textContent || '').replace(/\r?\n/g, "\r\n");
+    /*if (saveAs && Blob) {
+        var blob = new Blob([textContent], { type: "text/plain;charset=" + charset });
+        saveAs(blob, fileName);
+        return true;
+    } else {*///IE9-
+        var saveTxtWindow = window.frames.saveTxtWindow;
+        if (!saveTxtWindow) {
+            saveTxtWindow = document.createElement('iframe');
+            saveTxtWindow.id = 'saveTxtWindow';
+            saveTxtWindow.style.display = 'none';
+            document.body.insertBefore(saveTxtWindow, null);
+            saveTxtWindow = window.frames.saveTxtWindow;
+            if (!saveTxtWindow) {
+                saveTxtWindow = window.open('', '_temp', 'width=100,height=100');
+                if (!saveTxtWindow) {
+                    window.alert('Sorry, download file could not be created.');
+                    return false;
+                }
+            }
+        }
+
+        var doc = saveTxtWindow.document;
+        doc.open('text/html', 'replace');
+        doc.charset = charset;
+        if (/\.html?$/i.test(fileName)) {
+            doc.close();
+            doc.body.innerHTML = '\r\n' + textContent + '\r\n';
+        } else {
+            if (!/\.txt$/i.test(fileName)) fileName += '.txt';
+            doc.write(textContent);
+            doc.close();
+        }
+
+        var retValue = doc.execCommand('SaveAs', null, fileName);
+        saveTxtWindow.close();
+        return retValue;
+    //}
+}//)
 
 function setBackgroundColor() {
   var lilac = '#d6d6ff';
@@ -151,6 +233,7 @@ function toXml() {
   output.value = Blockly.Xml.domToPrettyText(xml);
   output.focus();
   output.select();
+  //SendMessage("DebugLogTest", "Hello");
   taChange();
 }
 
@@ -161,10 +244,109 @@ function fromXml() {
   taChange();
 }
 
-function toCode(lang) {
+function toCode(lang, fileExtention) {
   var output = document.getElementById('importExport');
   output.value = Blockly[lang].workspaceToCode(workspace);
+
+  /*var btn = output;
+  //data-clipboard-target = "#output"; //document.getElementById('btn');
+  var clipboard = new Clipboard(btn);
+  clipboard.on('success', function(e) {
+        console.log(e);
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+
+  // Copy Generated Code to clipboard
+  / *output.focus();
+  output.select();
+  //var keyboardEvent = document.createEvent("Event");
+  //var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+  //https://bugs.chromium.org/p/chromium/issues/detail?id=327853#c5
+  var keyboardEvent = new KeyboardEvent('keypress', {bubbles:true});
+  Object.defineProperty(keyboardEvent, 'charCode', {get:function(){return this.charCodeVal;}});
+  keyboardEvent.charCodeVal = 67;
+  output.dispatchEvent(keyboardEvent);
+*/
+  //makeKeyPressEvent(ctrlKey); // ctrlKey
+  //makeKeyPressEvent(c);
+   //__triggerKeyboardEvent(document.body, parseInt(67));
+//  var e = new keyboardEvent("keydown", {key: "67", char: "c", ctrlKey: true}); [e.which, e.keyCode]
+
+/*  keyboardEvent.initEvent('keydown', true, true, window, true);
+  keyboardEvent.keyCode = 67;
+
+  keyboardEvent[initMethod](
+                   "keydown", // event type : keydown, keyup, keypress
+                    true, // bubbles
+                    true, // cancelable
+                    window, // viewArg: should be window
+                    true, // ctrlKeyArg
+                    false, // altKeyArg
+                    false, // shiftKeyArg
+                    false, // metaKeyArg
+                    67, // keyCodeArg : unsigned long the virtual key code, else 0
+                    0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+                  );*/
+  //document.dispatchEvent(e);
   taChange();
+}
+
+var makeKeyPressEvent = function(k) {
+  console.assert(k.length === 1, k);
+  var e = document.createEvent('Events');
+  // KeyboardEvents bubble and are cancelable.
+  // https://developer.mozilla.org/en-US/docs/Web/API/event.initEvent
+  e.initEvent('keypress', true, false);
+  e.which = k.charCodeAt(0);
+  return e;
+};
+
+function __triggerKeyboardEvent(el, keyCode)
+{
+    var eventObj = document.createEventObject ?
+        document.createEventObject() : document.createEvent("Events");
+
+    if(eventObj.initEvent){
+      eventObj.initEvent("keydown", true, true);
+    }
+
+    eventObj.keyCode = keyCode;
+    eventObj.which = keyCode;
+
+    el.dispatchEvent ? el.dispatchEvent(eventObj) : el.fireEvent("onkeydown", eventObj);
+
+}
+
+function traceEvent(e){
+    $(".logs").prepend(jQuery("<li>").html(
+      "Key = " + e.keyCode
+    ).fadeIn());
+
+    console.log(e);
+}
+
+function triggerKeyboardEvent(el, keyCode){
+    var keyboardEvent = document.createEvent("KeyboardEvent");
+
+    var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+
+
+    keyboardEvent[initMethod](
+                       "keydown",
+                        true,      // bubbles oOooOOo0
+                        true,      // cancelable
+                        window,    // view
+                        false,     // ctrlKeyArg
+                        false,     // altKeyArg
+                        false,     // shiftKeyArg
+                        false,     // metaKeyArg
+                        keyCode,
+                        0          // charCode
+    );
+
+    el.dispatchEvent(keyboardEvent);
 }
 
 // Disable the "Import from XML" button if the XML is invalid.
@@ -381,18 +563,41 @@ h1 {
     &nbsp;
     <input type="button" value="Import from XML" onclick="fromXml()" id="import">
     <br>
-    <input type="button" value="To JavaScript" onclick="toCode('JavaScript')">
+    <form id="js-options">
+      <label>Filename: <input type="text" class="filename" id="text-filename" placeholder="BlocklyMediator"/>.txt</label>
+      <input type="submit" value="Save To JS" onclick="toCode('JavaScript')"/>
+    </form>
+
+    <input type="button" id="toCodeJs" value="To JavaScript" onclick="toCode('JavaScript')" data-clipboard-target = "#importExport">
     &nbsp;
-    <input type="button" value="To Python" onclick="toCode('Python')">
+    <input type="button" id="toCodePy" value="To Python" onclick="toCode('Python')">
     &nbsp;
-    <input type="button" value="To PHP" onclick="toCode('PHP')">
+    <input type="button" id="toCodePhp" value="To PHP" onclick="toCode('PHP')">
     &nbsp;
-    <input type="button" value="To Lua" onclick="toCode('Lua')">
+    <input type="button" id="toCodeLua" value="To Lua" onclick="toCode('Lua')">
     &nbsp;
-    <input type="button" value="To Dart" onclick="toCode('Dart')">
+    <input type="button" id="toCodeDart" value="To Dart" onclick="toCode('Dart')">
     <br>
+    <!-- Target -->
     <textarea id="importExport" style="width: 26%; height: 12em"
       onchange="taChange();" onkeyup="taChange()"></textarea>
+    <!-- 1. Define some markup -->
+    <button class="btn" data-clipboard-target="#importExport">
+    Copy to clipboard
+    </button>
+    <!-- 2. https://clipboardjs.com/ library -->
+    <script src="clipboard.js-master/dist/clipboard.min.js"></script>
+    <!-- 3. Instantiate clipboard by passing a HTML element -->
+    <script>
+    var btn = document.getElementById('btn');
+    var clipboard = new Clipboard('.btn');
+    clipboard.on('success', function(e) {
+        console.log(e);
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+    </script>
   </p>
 
   <p>
@@ -748,5 +953,9 @@ h1 {
     <category name="Variables" colour="330" custom="VARIABLE"></category>
     <category name="Functions" colour="290" custom="PROCEDURE"></category>
   </xml>
+  <!--<script async="" src="https://raw.github.com/eligrey/Blob.js/master/Blob.js"/>
+  <script async="" src="https://raw.githubusercontent.com/koffsyrup/FileSaver.js/master/FileSaver.js"/>
+  <script async="" src="https://raw.github.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js"/>
+  <script async="" src="https://raw.github.com/eligrey/FileSaver.js/master/demo/demo.js"/>-->
 </body>
 </html>

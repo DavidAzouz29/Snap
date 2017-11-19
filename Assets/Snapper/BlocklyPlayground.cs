@@ -14,6 +14,10 @@
 /// 
 /// https://github.com/MattRix/UnityDecompiled/blob/753fde37d331b2100f93cc5f9eb343f1dcff5eee/UnityEditor/UnityEditor/AssetStoreLoginWindow.cs
 /// https://github.com/MattRix/UnityDecompiled/blob/82e03c823811032fd970ffc9a75246e95c626502/UnityEditor/UnityEditor/AssetStoreAssetInspector.cs
+/// 
+/// https://answers.unity.com/questions/1430364/savecopy-a-txt-file-a-runtime.html
+/// https://docs.unity3d.com/ScriptReference/EditorGUIUtility-systemCopyBuffer.html
+/// https://stackoverflow.com/a/6055620
 /// </summary>
 
 using UnityEditor;
@@ -21,6 +25,7 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using System.Text;
+using System.IO;
 //using System.Xml;
 
 //typedef webView = WebView;
@@ -28,20 +33,39 @@ using System.Text;
 public class BlocklyPlayground : ScriptableObject
 {
 
-	static object webView;
-	//static Type webView;
-	static Type webViewType;
+    static object webView;
+    //static Type webView;
+    static Type webViewType;
+
+    #region SnapperWindows
+    const string snapperPath = "Window/Snapper/";
+
+    //[EditorWindowTitle(title = "Snapper Editor", useTypeNameAsIconName = true)]
+    [MenuItem(snapperPath + "Snapper Editor &s")]
+    static void OpenSnapperEditor()
+    {
+        OpenWebViewEditorWindowTabs("Snapper Editor",
+            "file:///Assets/StreamingAssets/snapper_editor.html");
+    }
 
     //[EditorWindowTitle(title = "Snapper Playground", useTypeNameAsIconName = true)]
-    [MenuItem("Window/Snapper/Snapper Playground &s")]
+    [MenuItem(snapperPath + "Snapper Playground %#&s")]
     static void OpenSnapperPlayground()
     {
         OpenWebViewEditorWindowTabs("Snapper Playground",
-            "file:///Assets/Snapper/blockly_playground.html");
+            "file:///Assets/StreamingAssets/blockly_playground.html");
+    }
+
+    //[EditorWindowTitle(title = "Scratch Playground", useTypeNameAsIconName = true)]
+    [MenuItem(snapperPath + "Scratch Playground &#s")]
+    static void OpenScratchPlayground()
+    {
+        OpenWebViewEditorWindowTabs("Scratch Playground",
+            "https://scratch.mit.edu/projects/editor/?tip_bar=home");
     }
 
     //[EditorWindowTitle(title = "Blockly Playground", useTypeNameAsIconName = true)]
-    [MenuItem("Window/Snapper/Blockly Playground &b")]
+    [MenuItem(snapperPath + "Blockly Playground &b")]
     static void OpenBlocklyPlayground()
     {
         OpenWebViewEditorWindowTabs("Blockly Playground",
@@ -49,11 +73,50 @@ public class BlocklyPlayground : ScriptableObject
     }
 
     //[EditorWindowTitle(title = "Block Factory", icon = "Snap.png")]
-    [MenuItem("Window/Snapper/Block Factory &f")]
+    [MenuItem(snapperPath + "Block Factory &f")]
     static void OpenBlockFactory()
     {
         OpenWebViewEditorWindowTabs("Block Factory",
             "https://blockly-demo.appspot.com/static/demos/blockfactory/index.html");
+    }
+
+    [MenuItem(snapperPath + "Test Webpage &t")]
+    static void OpenTestWebpage()
+    {
+        OpenWebViewEditorWindowTabs("Test Webpage",
+            "http://output.jsbin.com/awenaq/3");
+            //"https://clipboardjs.com/");
+    }
+    #endregion
+
+    [MenuItem(snapperPath + "Save as C# %#&c")]
+    static void SaveAsCSharp()
+    {
+        SaveToFile(".cs"); // File extension
+    }
+
+    [MenuItem(snapperPath + "Save as JS %#&j")]
+    static void SaveAsJavaScript()
+    {
+        SaveToFile(".js"); // File extension
+    }
+
+    static void SaveToFile(string a_ex)
+    {
+        string location = Path.Combine(Application.dataPath, "Snapper/Code/");// FileUtil.GetUniqueTempPathInProject();
+        string filename = "SnapperCode";
+
+        if (!Directory.Exists(location))
+        {
+            AssetDatabase.CreateFolder("Assets", "Snapper");
+            AssetDatabase.CreateFolder("Assets/Snapper", "Code");
+        } //location = Path.ChangeExtension(location, ".js"); //".unitypackage"
+        // TODO: open popup to save filename?
+        var path = EditorUtility.SaveFilePanel("Save code as " + a_ex, location, filename + EditorPrefs.GetInt("ScriptCount") + a_ex, a_ex.TrimStart(".".ToCharArray()));
+
+        // Saves a file based off text in clipboard.
+        File.WriteAllText(location + filename + a_ex, EditorGUIUtility.systemCopyBuffer, Encoding.ASCII); //System.Environment.SpecialFolder.CommonDocuments
+        Debug.LogFormat("File saved at {0} : {1}.{2}.", location, filename, a_ex);
     }
 
     static void OpenWebViewEditorWindowTabs(string a_windowTitle, string a_path)
@@ -144,7 +207,7 @@ public class BlocklyPlayground : ScriptableObject
         }
         document.getElementById("import").disabled = !valid;*/
     }
-#endregion
+    #endregion
 
     /*function GetUserName()
     {
@@ -197,7 +260,7 @@ public class BlocklyPlayground : ScriptableObject
             var webViewT = webView as Type;
             var methodInfo = webViewT.GetMethod("ExecuteJavascript", flags);
             methodInfo = methodInfo.MakeGenericMethod(webViewT);
-            
+
             methodInfo.Invoke(
                 webView,
                 new object[]

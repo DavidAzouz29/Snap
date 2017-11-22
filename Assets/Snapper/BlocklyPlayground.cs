@@ -51,14 +51,14 @@ public class BlocklyPlayground : ScriptableObject
         OpenWebViewEditorWindowTabs("Snapper Editor",
             "file:///Assets/StreamingAssets/snapper_editor.html");
     }
-
+	/*
     //[EditorWindowTitle(title = "Snapper Playground", useTypeNameAsIconName = true)]
     [MenuItem(snapperPath + "Snapper Playground %#&s")]
     static void OpenSnapperPlayground()
     {
         OpenWebViewEditorWindowTabs("Snapper Playground",
             "file:///Assets/StreamingAssets/blockly_playground.html");
-    }
+    }*/
 
     //[EditorWindowTitle(title = "Scratch Playground", useTypeNameAsIconName = true)]
     [MenuItem(snapperPath + "Scratch Playground &#s")]
@@ -139,7 +139,7 @@ public class BlocklyPlayground : ScriptableObject
         // Replacing content within the script template.
         //----------------------------------------------
         string fileContent = File.ReadAllText(result);
-        fileContent = fileContent.Replace("#SCRIPTNAME#", Path.GetFileNameWithoutExtension(filename));
+        fileContent = fileContent.Replace("#SCRIPTNAME#", Path.GetFileNameWithoutExtension(path));
         var regex = new System.Text.RegularExpressions.Regex(System.Text.RegularExpressions.Regex.Escape("#NOTRIM#"));
         var newText = regex.Replace(fileContent, "", 1); // Start Func.
         fileContent = newText.Replace("#NOTRIM#", EditorGUIUtility.systemCopyBuffer); // Update - Replace 2nd NOTRIM with generated code.

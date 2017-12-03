@@ -30,6 +30,22 @@ Blockly.Blocks['math_vector3'] = {
   }
 };
 
+Blockly.Blocks['math_arithmetic_operator'] = {
+  init: function() {
+    this.appendValueInput("A")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["+=","plusEqual"], ["-=","minusEqual"], ["*=","timesEqual"], ["/=","divideEqual"], ["%=","modulusEqual"]]), "OP");
+    this.appendValueInput("B")
+        .setCheck(null);
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("%{BKY_MATH_ARITHMETIC_HELPURL}");
+  }
+};
+
 Blockly.Blocks['move_move'] = {
   init: function() {
     this.appendValueInput("Vector")

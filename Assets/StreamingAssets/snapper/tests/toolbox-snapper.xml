@@ -1,4 +1,4 @@
-<xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox-snapper" style="display: none;">
+<xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox-categories" style="display: none;">
   <category name="Events" colour="#a5935b">
     <block type="events_init"></block>
     <block type="events_start"></block>
@@ -172,6 +172,9 @@
           <field name="direction">Forward</field>
         </block>
       </value>
+    </block>
+    <block type="math_arithmetic_operator">
+      <field name="OP">plusEqual</field>
     </block>
     <block type="move_rotate">
       <field name="speed">speedMedium</field>

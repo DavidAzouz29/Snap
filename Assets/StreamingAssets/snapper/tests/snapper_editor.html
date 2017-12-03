@@ -17,7 +17,7 @@
 <script src="../generators/javascript.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/logic.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/loops.js"></script>
-<script src="https://blockly-demo.appspot.com/static/generators/javascript/math.js"></script>
+<script src="../generators/javascript/math.js"></script>
 <script src="../generators/javascript/text.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/lists.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/colour.js"></script>
@@ -629,6 +629,9 @@ function start() {
                     </block>
                     <block type="move_rotate">
                       <field name="speed">speedMedium</field>
+                    </block>
+                    <block type="math_arithmetic_operator">
+                      <field name="OP">plusEqual</field>
                     </block>
                     <block type="move_move">
                       <field name="speed">speedMedium</field>

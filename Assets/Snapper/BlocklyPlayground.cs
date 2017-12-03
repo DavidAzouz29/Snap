@@ -15,6 +15,7 @@
 /// https://github.com/MattRix/UnityDecompiled/blob/753fde37d331b2100f93cc5f9eb343f1dcff5eee/UnityEditor/UnityEditor/AssetStoreLoginWindow.cs
 /// https://github.com/MattRix/UnityDecompiled/blob/82e03c823811032fd970ffc9a75246e95c626502/UnityEditor/UnityEditor/AssetStoreAssetInspector.cs
 /// https://github.com/MattRix/UnityDecompiled/blob/82e03c823811032fd970ffc9a75246e95c626502/UnityEditor/UnityEditor/AddComponentWindow.cs#L168
+/// https://github.com/MattRix/UnityDecompiled/blob/b4b209f8d1c93d66f560bf23c81bc0910cef177c/UnityEditor/UnityEditor/ProjectWindowUtil.cs#L193
 /// 
 /// https://answers.unity.com/questions/1430364/savecopy-a-txt-file-a-runtime.html
 /// https://docs.unity3d.com/ScriptReference/EditorGUIUtility-systemCopyBuffer.html
@@ -42,14 +43,14 @@ public class BlocklyPlayground : ScriptableObject
     static Type webViewType;
 
     #region SnapperWindows
-    const string snapperPath = "Window/Snapper/";
+    public const string snapperPath = "Window/Snapper/";
 
     //[EditorWindowTitle(title = "Snapper Editor", useTypeNameAsIconName = true)]
     [MenuItem(snapperPath + "Snapper Editor &s")]
-    static void OpenSnapperEditor()
+    public static void OpenSnapperEditor()
     {
         OpenWebViewEditorWindowTabs("Snapper Editor",
-            "file:///Assets/StreamingAssets/snapper_editor.html");
+            "file:///Assets/StreamingAssets/snapper/tests/snapper_editor.html");
     }
 	/*
     //[EditorWindowTitle(title = "Snapper Playground", useTypeNameAsIconName = true)]
@@ -61,7 +62,7 @@ public class BlocklyPlayground : ScriptableObject
     }*/
 
     //[EditorWindowTitle(title = "Scratch Playground", useTypeNameAsIconName = true)]
-    [MenuItem(snapperPath + "Scratch Playground &#s")]
+    [MenuItem(snapperPath + "Scratch Playground &#s", priority = 2)]
     static void OpenScratchPlayground()
     {
         OpenWebViewEditorWindowTabs("Scratch Playground",
@@ -93,14 +94,14 @@ public class BlocklyPlayground : ScriptableObject
     }
     #endregion
 
-    [MenuItem(snapperPath + "Save as C# %#&c")]
-    static void SaveAsCSharp()
+    [MenuItem(snapperPath + "Save/Save as C# %#&c")]
+    public static void SaveAsCSharp()
     {
         SaveToFile(".cs"); // File extension
     }
 
-    [MenuItem(snapperPath + "Save as JS %#&j")]
-    static void SaveAsJavaScript()
+    [MenuItem(snapperPath + "Save/Save as JS %#&j")]
+    public static void SaveAsJavaScript()
     {
         SaveToFile(".js"); // File extension
     }
@@ -120,41 +121,44 @@ public class BlocklyPlayground : ScriptableObject
         //----------------------------------------------
         // Copy script from Unity templates.
         //----------------------------------------------
-        string templatePath = Path.Combine(EditorApplication.applicationContentsPath, "Resources/ScriptTemplates");
-        string result = "";
-        if (a_ex != ".js")
+        if (path != null)
         {
-            if (a_ex != ".cs")
+            string templatePath = Path.Combine(EditorApplication.applicationContentsPath, "Resources/ScriptTemplates");
+            string result = "";
+            if (a_ex != ".js")
             {
-                throw new ArgumentOutOfRangeException();
+                if (a_ex != ".cs")
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                result = Path.Combine(templatePath, "81-C# Script-NewBehaviourScript.cs.txt");
             }
-            result = Path.Combine(templatePath, "81-C# Script-NewBehaviourScript.cs.txt");
-        }
-        else
-        {
-            result = Path.Combine(templatePath, "82-Javascript-NewBehaviourScript.js.txt");
-        }
-        
-        //----------------------------------------------
-        // Replacing content within the script template.
-        //----------------------------------------------
-        string fileContent = File.ReadAllText(result);
-        fileContent = fileContent.Replace("#SCRIPTNAME#", Path.GetFileNameWithoutExtension(path));
-        var regex = new System.Text.RegularExpressions.Regex(System.Text.RegularExpressions.Regex.Escape("#NOTRIM#"));
-        var newText = regex.Replace(fileContent, "", 1); // Start Func.
-        fileContent = newText.Replace("#NOTRIM#", EditorGUIUtility.systemCopyBuffer); // Update - Replace 2nd NOTRIM with generated code.
-        //fileContent = fileContent.Replace("Update() {", "Update() {" + Environment.NewLine + EditorGUIUtility.systemCopyBuffer);
-        //----------------------------------------------
-        // TODO: Insert variables based on ex.
+            else
+            {
+                result = Path.Combine(templatePath, "82-Javascript-NewBehaviourScript.js.txt");
+            }
 
-        File.WriteAllText(path, fileContent, Encoding.UTF8);
-        AssetDatabase.Refresh();
-        //----------------------------------------------
-        Debug.LogFormat("File saved at {0}.", path);
+            //----------------------------------------------
+            // Replacing content within the script template.
+            //----------------------------------------------
+            string fileContent = File.ReadAllText(result);
+            fileContent = fileContent.Replace("#SCRIPTNAME#", Path.GetFileNameWithoutExtension(path));
+            var regex = new System.Text.RegularExpressions.Regex(System.Text.RegularExpressions.Regex.Escape("#NOTRIM#"));
+            var newText = regex.Replace(fileContent, "", 1); // Start Func.
+            fileContent = newText.Replace("#NOTRIM#", EditorGUIUtility.systemCopyBuffer); // Update - Replace 2nd NOTRIM with generated code.
+            //fileContent = fileContent.Replace("Update() {", "Update() {" + Environment.NewLine + EditorGUIUtility.systemCopyBuffer);
+            //----------------------------------------------
+            // TODO: Insert variables based on ex.
+            UTF8Encoding encoding = new UTF8Encoding(true);
+            File.WriteAllText(path, fileContent, encoding); //TODO: why not Encoding.UTF8?
+            AssetDatabase.Refresh();
+            //----------------------------------------------
+            Debug.LogFormat("File saved at {0}.", path);
+        }
     }
 
     [MenuItem(snapperPath + "Publish/Steam Direct %#&p")]
-    static void PublishTo()//string a_platform, string a_cost)
+    public static void PublishTo()//string a_platform, string a_cost)
     {
         string a_platform = "Steam Direct";
         string a_cost = "$100.00USD";
@@ -190,7 +194,7 @@ public class BlocklyPlayground : ScriptableObject
             {
                 a_windowTitle,
                 a_path,
-                200, 500, 800, 600
+                200, 500, 800, 600 //int minWidth, int minHeight, int maxWidth, int maxHeight
             });
     }
 

@@ -1,20 +1,20 @@
 <xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox-snapper" style="display: none;">
-  <category name="Logic" colour="#5C81A6">
+  <category name="Events" colour="#a5935b">
+    <block type="events_init"></block>
+    <block type="events_start"></block>
+    <block type="events_awake"></block>
+    <block type="events_update"></block>
+  </category>
+  <category name="Logic" colour="210">
     <block type="controls_if"></block>
-    <block type="logic_compare">
-      <field name="OP">EQ</field>
-    </block>
-    <block type="logic_operation">
-      <field name="OP">AND</field>
-    </block>
+    <block type="logic_compare"></block>
+    <block type="logic_operation"></block>
     <block type="logic_negate"></block>
-    <block type="logic_boolean">
-      <field name="BOOL">TRUE</field>
-    </block>
-    <block type="logic_null"></block>
+    <block type="logic_boolean"></block>
+    <block type="logic_null" disabled="true"></block>
     <block type="logic_ternary"></block>
   </category>
-  <category name="Loops" colour="#5CA65C">
+  <category name="Loops" colour="120">
     <block type="controls_repeat_ext">
       <value name="TIMES">
         <shadow type="math_number">
@@ -22,11 +22,9 @@
         </shadow>
       </value>
     </block>
-    <block type="controls_whileUntil">
-      <field name="MODE">WHILE</field>
-    </block>
+    <block type="controls_repeat" disabled="true"></block>
+    <block type="controls_whileUntil"></block>
     <block type="controls_for">
-      <field name="VAR" id="IxdzwLw,_;[}wNwb:a=k" variabletype="">i</field>
       <value name="FROM">
         <shadow type="math_number">
           <field name="NUM">1</field>
@@ -43,55 +41,12 @@
         </shadow>
       </value>
     </block>
-    <block type="controls_forEach">
-      <field name="VAR" id="c9{@a9e8[n[Koe9,dW*d" variabletype="">j</field>
-    </block>
-    <block type="controls_flow_statements">
-      <field name="FLOW">BREAK</field>
-    </block>
+    <block type="controls_forEach"></block>
+    <block type="controls_flow_statements"></block>
   </category>
-  <category name="Math" colour="#5C68A6">
-    <block type="math_round">
-      <field name="OP">ROUND</field>
-      <value name="NUM">
-        <shadow type="math_number">
-          <field name="NUM">3.1</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="math_number">
-      <field name="NUM">0</field>
-    </block>
-    <block type="math_single">
-      <field name="OP">ROOT</field>
-      <value name="NUM">
-        <shadow type="math_number">
-          <field name="NUM">9</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="math_trig">
-      <field name="OP">SIN</field>
-      <value name="NUM">
-        <shadow type="math_number">
-          <field name="NUM">45</field>
-        </shadow>
-      </value>
-    </block>
-    <block type="math_constant">
-      <field name="CONSTANT">PI</field>
-    </block>
-    <block type="math_number_property">
-      <mutation divisor_input="false"></mutation>
-      <field name="PROPERTY">EVEN</field>
-      <value name="NUMBER_TO_CHECK">
-        <shadow type="math_number">
-          <field name="NUM">0</field>
-        </shadow>
-      </value>
-    </block>
+  <category name="Math" colour="230">
+    <block type="math_number" gap="32"></block>
     <block type="math_arithmetic">
-      <field name="OP">ADD</field>
       <value name="A">
         <shadow type="math_number">
           <field name="NUM">1</field>
@@ -103,10 +58,36 @@
         </shadow>
       </value>
     </block>
-    <block type="math_on_list">
-      <mutation op="SUM"></mutation>
-      <field name="OP">SUM</field>
+    <block type="math_single">
+      <value name="NUM">
+        <shadow type="math_number">
+          <field name="NUM">9</field>
+        </shadow>
+      </value>
     </block>
+    <block type="math_trig">
+      <value name="NUM">
+        <shadow type="math_number">
+          <field name="NUM">45</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_constant"></block>
+    <block type="math_number_property">
+      <value name="NUMBER_TO_CHECK">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_round">
+      <value name="NUM">
+        <shadow type="math_number">
+          <field name="NUM">3.1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_on_list"></block>
     <block type="math_modulo">
       <value name="DIVIDEND">
         <shadow type="math_number">
@@ -186,25 +167,12 @@
       <field name="speed">slow</field>
     </block>
   </category>
-  <category name="Text" colour="#5CA68D">
-    <block type="text_charAt">
-      <mutation at="true"></mutation>
-      <field name="WHERE">FROM_START</field>
-      <value name="VALUE">
-        <block type="variables_get">
-          <field name="VAR" id="X?ADBiXdWJdtIgkJR?+M" variabletype="">text</field>
-        </block>
-      </value>
-    </block>
-    <block type="text">
-      <field name="TEXT"></field>
-    </block>
+  <category name="Text" colour="160">
+    <block type="text"></block>
+    <block type="text_join"></block>
     <block type="text_append">
-      <field name="VAR" id="KgFn-Yx`]lhu|r|h|w8y" variabletype="">item</field>
       <value name="TEXT">
-        <shadow type="text">
-          <field name="TEXT"></field>
-        </shadow>
+        <shadow type="text"></shadow>
       </value>
     </block>
     <block type="text_length">
@@ -222,10 +190,9 @@
       </value>
     </block>
     <block type="text_indexOf">
-      <field name="END">FIRST</field>
       <value name="VALUE">
         <block type="variables_get">
-          <field name="VAR" id="X?ADBiXdWJdtIgkJR?+M" variabletype="">text</field>
+          <field name="VAR">text</field>
         </block>
       </value>
       <value name="FIND">
@@ -234,21 +201,21 @@
         </shadow>
       </value>
     </block>
-    <block type="text_join">
-      <mutation items="2"></mutation>
+    <block type="text_charAt">
+      <value name="VALUE">
+        <block type="variables_get">
+          <field name="VAR">text</field>
+        </block>
+      </value>
     </block>
     <block type="text_getSubstring">
-      <mutation at1="true" at2="true"></mutation>
-      <field name="WHERE1">FROM_START</field>
-      <field name="WHERE2">FROM_START</field>
       <value name="STRING">
         <block type="variables_get">
-          <field name="VAR" id="X?ADBiXdWJdtIgkJR?+M" variabletype="">text</field>
+          <field name="VAR">text</field>
         </block>
       </value>
     </block>
     <block type="text_changeCase">
-      <field name="CASE">UPPERCASE</field>
       <value name="TEXT">
         <shadow type="text">
           <field name="TEXT">abc</field>
@@ -256,13 +223,37 @@
       </value>
     </block>
     <block type="text_trim">
-      <field name="MODE">BOTH</field>
       <value name="TEXT">
         <shadow type="text">
           <field name="TEXT">abc</field>
         </shadow>
       </value>
     </block>
+    <block type="text_count">
+      <value name="SUB">
+        <shadow type="text"></shadow>
+      </value>
+      <value name="TEXT">
+        <shadow type="text"></shadow>
+      </value>
+    </block>
+    <block type="text_replace">
+      <value name="FROM">
+        <shadow type="text"></shadow>
+      </value>
+      <value name="TO">
+        <shadow type="text"></shadow>
+      </value>
+      <value name="TEXT">
+        <shadow type="text"></shadow>
+      </value>
+    </block>
+    <block type="text_reverse">
+      <value name="TEXT">
+        <shadow type="text"></shadow>
+      </value>
+    </block>
+    <label text="Input/Output:" web-class="ioLabel"></label>
     <block type="text_print">
       <value name="TEXT">
         <shadow type="text">
@@ -271,8 +262,6 @@
       </value>
     </block>
     <block type="text_prompt_ext">
-      <mutation type="TEXT"></mutation>
-      <field name="TYPE">TEXT</field>
       <value name="TEXT">
         <shadow type="text">
           <field name="TEXT">abc</field>
@@ -280,18 +269,11 @@
       </value>
     </block>
   </category>
-  <category name="Lists" colour="#745CA6">
-    <block type="lists_indexOf">
-      <field name="END">FIRST</field>
-      <value name="VALUE">
-        <block type="variables_get">
-          <field name="VAR" id="[L-][Q.rhQ7iZqOL37-[" variabletype="">list</field>
-        </block>
-      </value>
-    </block>
+  <category name="Lists" colour="260">
     <block type="lists_create_with">
       <mutation items="0"></mutation>
     </block>
+    <block type="lists_create_with"></block>
     <block type="lists_repeat">
       <value name="NUM">
         <shadow type="math_number">
@@ -301,57 +283,46 @@
     </block>
     <block type="lists_length"></block>
     <block type="lists_isEmpty"></block>
-    <block type="lists_create_with">
-      <mutation items="3"></mutation>
-    </block>
-    <block type="lists_getIndex">
-      <mutation statement="false" at="true"></mutation>
-      <field name="MODE">GET</field>
-      <field name="WHERE">FROM_START</field>
+    <block type="lists_indexOf">
       <value name="VALUE">
         <block type="variables_get">
-          <field name="VAR" id="[L-][Q.rhQ7iZqOL37-[" variabletype="">list</field>
+          <field name="VAR">list</field>
+        </block>
+      </value>
+    </block>
+    <block type="lists_getIndex">
+      <value name="VALUE">
+        <block type="variables_get">
+          <field name="VAR">list</field>
         </block>
       </value>
     </block>
     <block type="lists_setIndex">
-      <mutation at="true"></mutation>
-      <field name="MODE">SET</field>
-      <field name="WHERE">FROM_START</field>
       <value name="LIST">
         <block type="variables_get">
-          <field name="VAR" id="[L-][Q.rhQ7iZqOL37-[" variabletype="">list</field>
+          <field name="VAR">list</field>
         </block>
       </value>
     </block>
     <block type="lists_getSublist">
-      <mutation at1="true" at2="true"></mutation>
-      <field name="WHERE1">FROM_START</field>
-      <field name="WHERE2">FROM_START</field>
       <value name="LIST">
         <block type="variables_get">
-          <field name="VAR" id="[L-][Q.rhQ7iZqOL37-[" variabletype="">list</field>
+          <field name="VAR">list</field>
         </block>
       </value>
     </block>
     <block type="lists_split">
-      <mutation mode="SPLIT"></mutation>
-      <field name="MODE">SPLIT</field>
       <value name="DELIM">
         <shadow type="text">
           <field name="TEXT">,</field>
         </shadow>
       </value>
     </block>
-    <block type="lists_sort">
-      <field name="TYPE">NUMERIC</field>
-      <field name="DIRECTION">1</field>
-    </block>
+    <block type="lists_sort"></block>
+    <block type="lists_reverse"></block>
   </category>
-  <category name="Colour" colour="#A6745C">
-    <block type="colour_picker">
-      <field name="COLOUR">#ff0000</field>
-    </block>
+  <category name="Colour" colour="20">
+    <block type="colour_picker"></block>
     <block type="colour_random"></block>
     <block type="colour_rgb">
       <value name="RED">

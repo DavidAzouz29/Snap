@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Playground</title>
+  <title>Snapper Playground</title>
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -14,11 +14,11 @@
   var root="https://blockly-demo.appspot.com/static/";
 </script>
 <script src="https://blockly-demo.appspot.com/static/blockly_uncompressed.js"></script>
-<script src="https://blockly-demo.appspot.com/static/generators/javascript.js"></script>
+<script src="../generators/javascript.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/logic.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/loops.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/math.js"></script>
-<script src="https://blockly-demo.appspot.com/static/generators/javascript/text.js"></script>
+<script src="../generators/javascript/text.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/lists.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/colour.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/variables.js"></script>
@@ -69,8 +69,10 @@
 <script src="https://blockly-demo.appspot.com/static/blocks/variables.js"></script>
 <script src="https://blockly-demo.appspot.com/static/blocks/procedures.js"></script>
 
-<script src="snapper/generators/javascript/motion.js"></script>
-<script src="snapper/blocks/motion.js"></script>
+<script src="../generators/javascript/events.js"></script>
+<script src="../generators/javascript/movement.js"></script>
+<script src="../blocks/events.js"></script>
+<script src="../blocks/movement.js"></script>
 
 <script>
 'use strict';
@@ -369,7 +371,7 @@ function start() {
 
             <div id="blocklyDiv"></div>
 
-            <h1>Blockly Playground</h1>
+            <h1>Snapper Playground</h1>
 
             <p><a href="javascript:void(workspace.setVisible(true))">Show</a>
               - <a href="javascript:void(workspace.setVisible(false))">Hide</a></p>
@@ -414,7 +416,7 @@ function start() {
                   Copy to clipboard
                 </button>
                 <!-- 2. https://clipboardjs.com/ library -->
-                <script src="clipboard.js-master/dist/clipboard.min.js"></script>
+                <script src="../../clipboard.js-master/dist/clipboard.min.js"></script>
                 <!-- 3. Instantiate clipboard by passing a HTML element -->
                 <script>
                 var btn = document.getElementById('btn');
@@ -462,6 +464,12 @@ function start() {
 
 
               <xml id="toolbox-categories" style="display: none">
+                <category name="Events" colour="#a5935b">
+                  <block type="events_init"></block>
+                  <block type="events_start"></block>
+                  <block type="events_awake"></block>
+                  <block type="events_update"></block>
+                </category>
                 <category name="Logic" colour="210">
                   <block type="controls_if"></block>
                   <block type="logic_compare"></block>
@@ -587,6 +595,42 @@ function start() {
                     </value>
                   </block>
                   <block type="math_random_float"></block>
+                </category>
+                <category name="Movement" colour="#5b80a5">
+                  <block type="transform_transform"></block>
+                  <block type="transform_transform">
+                    <value name="Move">
+                      <block type="math_vector3">
+                        <field name="X">0</field>
+                        <field name="Y">0</field>
+                        <field name="Z">0</field>
+                      </block>
+                    </value>
+                  </block>
+                  <block type="math_vector3">
+                    <field name="X">0</field>
+                    <field name="Y">0</field>
+                    <field name="Z">0</field>
+                  </block>
+                  <block type="move_move"></block>
+                  <block type="move_move">
+                    <value name="Vector">
+                      <block type="move_facing">
+                        <field name="direction">Forward</field>
+                        <value name="directions">
+                          <block type="move_speed">
+                            <field name="speed">medium</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                  </block>
+                  <block type="move_facing">
+                    <field name="direction">Forward</field>
+                  </block>
+                  <block type="move_speed">
+                    <field name="speed">slow</field>
+                  </block>
                 </category>
                 <category name="Text" colour="160">
                   <block type="text"></block>
@@ -784,9 +828,5 @@ function start() {
                 <category name="Variables" colour="330" custom="VARIABLE"></category>
                 <category name="Functions" colour="290" custom="PROCEDURE"></category>
               </xml>
-              <!--<script async="" src="https://raw.github.com/eligrey/Blob.js/master/Blob.js"/>
-              <script async="" src="https://raw.githubusercontent.com/koffsyrup/FileSaver.js/master/FileSaver.js"/>
-              <script async="" src="https://raw.github.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js"/>
-              <script async="" src="https://raw.github.com/eligrey/FileSaver.js/master/demo/demo.js"/>-->
             </body>
             </html>

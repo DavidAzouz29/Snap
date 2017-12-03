@@ -27,3 +27,17 @@ Blockly.JavaScript['events_init'] = function(block) {
   var code = statements_code + '\n';
   return code;
 };
+
+Blockly.JavaScript['events_keypress'] = function(block) {
+  var text_keypress = block.getFieldValue('KeyPress');
+  var statements_code = Blockly.JavaScript.statementToCode(block, 'code');
+  var code = 'if (Input.GetKeyDown(KeyCode.' + text_keypress + '))\n{\n' + statements_code + '}\n';
+  return code;
+};
+
+Blockly.JavaScript['events_keyhold'] = function(block) {
+  var text_keypress = block.getFieldValue('KeyHold');
+  var statements_code = Blockly.JavaScript.statementToCode(block, 'code');
+  var code = 'if (Input.GetKey(KeyCode.' + text_keypress + '))\n{\n' + statements_code + '}\n';
+  return code;
+};

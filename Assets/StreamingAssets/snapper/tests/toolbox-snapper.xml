@@ -4,6 +4,12 @@
     <block type="events_start"></block>
     <block type="events_awake"></block>
     <block type="events_update"></block>
+    <block type="events_keyhold">
+      <field name="KeyHold">W</field>
+    </block>
+    <block type="events_keypress">
+      <field name="KeyPress">W</field>
+    </block>
   </category>
   <category name="Logic" colour="210">
     <block type="controls_if"></block>
@@ -147,24 +153,36 @@
       <field name="Y">0</field>
       <field name="Z">0</field>
     </block>
-    <block type="move_move"></block>
-    <block type="move_move">
-      <value name="Vector">
-        <block type="move_facing">
-          <field name="direction">Forward</field>
-          <value name="directions">
-            <block type="move_speed">
-              <field name="speed">medium</field>
-            </block>
-          </value>
-        </block>
-      </value>
-    </block>
     <block type="move_facing">
       <field name="direction">Forward</field>
     </block>
     <block type="move_speed">
-      <field name="speed">slow</field>
+      <field name="speed">medium</field>
+    </block>
+    <block type="move_move">
+      <field name="speed">speedMedium</field>
+    </block>
+    <block type="move_rotate">
+      <field name="speed">speedMedium</field>
+    </block>
+    <block type="move_move">
+      <field name="speed">speedMedium</field>
+      <value name="Vector">
+        <block type="move_facing">
+          <field name="direction">Forward</field>
+        </block>
+      </value>
+    </block>
+    <block type="move_rotate">
+      <field name="speed">speedMedium</field>
+      <value name="Vector">
+        <block type="move_facing">
+          <field name="direction">Up</field>
+        </block>
+      </value>
+    </block>
+    <block type="move_scale">
+      <field name="scale">scaleMedium</field>
     </block>
   </category>
   <category name="Text" colour="160">

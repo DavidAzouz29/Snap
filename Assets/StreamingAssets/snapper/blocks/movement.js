@@ -35,11 +35,43 @@ Blockly.Blocks['move_move'] = {
     this.appendValueInput("Vector")
         .setCheck("Vector")
         .appendField("Move");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["speed slow","speedSlow"], ["speed medium","speedMedium"], ["speed fast","speedFast"]]), "speed");
+    this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(210);
  this.setTooltip("");
  this.setHelpUrl("https://docs.unity3d.com/ScriptReference/Transform.html");
+  }
+};
+
+Blockly.Blocks['move_rotate'] = {
+  init: function() {
+    this.appendValueInput("Vector")
+        .setCheck("Vector")
+        .appendField("Rotate");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["speed slow","speedSlow"], ["speed medium","speedMedium"], ["speed fast","speedFast"]]), "speed");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(210);
+ this.setTooltip("");
+ this.setHelpUrl("https://docs.unity3d.com/ScriptReference/Transform.Rotate.html");
+  }
+};
+
+Blockly.Blocks['move_scale'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["Scale small","scaleSmall"], ["Scale medium","scaleMedium"], ["Scale big","scaleBig"]]), "scale");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(210);
+ this.setTooltip("");
+ this.setHelpUrl("https://docs.unity3d.com/ScriptReference/Transform.Rotate.html");
   }
 };
 

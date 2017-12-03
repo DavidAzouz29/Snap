@@ -21,10 +21,73 @@ Blockly.JavaScript['math_vector3'] = function(block) {
 
 Blockly.JavaScript['move_move'] = function(block) {
   var value_vector = Blockly.JavaScript.valueToCode(block, 'Vector', Blockly.JavaScript.ORDER_NONE);
+  var dropdown_speed = block.getFieldValue('speed');
   // TODO: Assemble JavaScript into code variable.
   if(value_vector == null)
     value_vector = 'Vector3.forward'
-  var code = 'transform.Translate(' + value_vector + ' * Time.deltaTime);\n';
+    var speed = '0f';
+    switch (dropdown_speed) {
+      case 'speedSlow':
+        speed = '2f';
+        break;
+        case 'speedMedium':
+          speed = '5f';
+          break;
+          case 'speedFast':
+            speed = '10f';
+            break;
+      default:
+      speed = '2f';
+      break;
+    }
+  var code = 'transform.Translate(' + value_vector + ' * Time.deltaTime * ' + speed + ');\n';
+  return code;
+};
+
+Blockly.JavaScript['move_rotate'] = function(block) {
+  var value_vector = Blockly.JavaScript.valueToCode(block, 'Vector', Blockly.JavaScript.ORDER_NONE);
+  var dropdown_speed = block.getFieldValue('speed');
+  // TODO: Assemble JavaScript into code variable.
+  if(value_vector == null)
+    value_vector = 'Vector3.up'
+    var speed = '0f';
+    switch (dropdown_speed) {
+      case 'speedSlow':
+        speed = '90f';
+        break;
+        case 'speedMedium':
+          speed = '180f';
+          break;
+          case 'speedFast':
+            speed = '270f';
+            break;
+      default:
+      speed = '2f';
+      break;
+    }
+  var code = 'transform.Rotate(' + value_vector + ' * Time.deltaTime * ' + speed + ');\n';
+  return code;
+};
+
+Blockly.JavaScript['move_scale'] = function(block) {
+  var dropdown_scale = block.getFieldValue('scale');
+  var scale = '0f';
+  switch (dropdown_scale) {
+    case 'scaleSmall':
+      scale = '0.5f, 0.5f, 0.5f';
+      break;
+      case 'scaleMedium':
+        scale = '1f, 1f, 1f';
+        break;
+        case 'scaleBig':
+          scale = '2f, 2f, 2f';
+          break;
+    default:
+    scale = '1f, 1f, 1f';
+    break;
+  }
+  // TODO: Assemble JavaScript into code variable.
+  var code = 'transform.localScale += new Vector3(' + scale + ');\n';
   return code;
 };
 

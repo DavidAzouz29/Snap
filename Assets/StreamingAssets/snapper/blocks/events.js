@@ -45,3 +45,33 @@ Blockly.Blocks['events_awake'] = {
  this.setHelpUrl("");
   }
 };
+
+Blockly.Blocks['events_keypress'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("When I Press Once")
+        .appendField(new Blockly.FieldTextInput("W"), "KeyPress");
+    this.appendStatementInput("code")
+        .setCheck(null);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(20);
+ this.setTooltip("KeyPress");
+ this.setHelpUrl("https://docs.unity3d.com/ScriptReference/KeyCode.html");
+  }
+};
+
+Blockly.Blocks['events_keyhold'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("When I Hold")
+        .appendField(new Blockly.FieldTextInput("W"), "KeyHold");
+    this.appendStatementInput("code")
+        .setCheck(null);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(20);
+ this.setTooltip("KeyHold");
+ this.setHelpUrl("https://docs.unity3d.com/ScriptReference/Input.html");
+  }
+};

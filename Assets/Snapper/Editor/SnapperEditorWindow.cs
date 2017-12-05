@@ -83,8 +83,9 @@ public class SnapperEditorWindow : EditorWindow
             Debug.Log(Application.companyName);
         }
         EditorGUILayout.EndVertical();
+        #endregion
 
-        // Big Buttons
+        #region Big Buttons
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button(EditorGUIUtility.IconContent("cs Script Icon", "|Save as C# Script.")))
         {
@@ -99,13 +100,29 @@ public class SnapperEditorWindow : EditorWindow
         // Create primitive with our most recent Snapper script.
         EditorGUILayout.BeginVertical();
         op = (E_PRIMITIVE_STATE)EditorGUILayout.EnumPopup("Primitive to create:", op);
+        EditorGUILayout.LabelField(string.Format("Last Snapper Script: \"{0}\"", BlocklyPlayground.LastSnapperScript));
 
-        if (GUILayout.Button(EditorGUIUtility.IconContent("GameObject Icon", "|Adds the latest Snapper script to a primitive."), GUILayout.Height(fButtonHeight - fPadding * 4f)))
+        // If we're not compiling...
+        if (!EditorApplication.isCompiling)
         {
-            InstantiatePrimitive(op);
+            // ... allow us to create a primitive.
+            if (GUILayout.Button(EditorGUIUtility.IconContent("GameObject Icon",
+            "|Adds the latest Snapper script to a primitive."),
+            GUILayout.Height(fButtonHeight - fPadding * 8f)))
+            {
+                InstantiatePrimitive(op);
+            }
+        }
+        // ... We don't want to create a primitive if we're compiling.
+        else
+        {
+            GUIStyle style = new GUIStyle();
+            style.richText = true;
+            EditorGUILayout.LabelField("<color=red>Compiling!</color> Please Wait.", style);
         }
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndHorizontal();
+        #endregion
 
         EditorGUILayout.EndHorizontal();
 
@@ -116,49 +133,56 @@ public class SnapperEditorWindow : EditorWindow
     void InstantiatePrimitive(E_PRIMITIVE_STATE op)
     {
         string component = BlocklyPlayground.LastSnapperScript != null ? BlocklyPlayground.LastSnapperScript : "PlayerMovement";
-        
+
         switch (op)
         {
             case E_PRIMITIVE_STATE.CUBE:
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.position = Vector3.zero;
-                cube.name = "PlayerMovement"; //TODO: RECODE: HACK HACK OMG HACK. Can't add component via string anymore :/
-                cube.AddComponent<PlayerMovement>();// (System.Type.GetType(component)); https://blogs.unity3d.com/2015/01/21/addcomponentstring-api-removal-in-unity-5-0/#comment-210882
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Cube), component);
                 break;
             case E_PRIMITIVE_STATE.SPHERE:
-                GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                sphere.transform.position = Vector3.zero;
-                sphere.name = component;
-                sphere.AddComponent(System.Type.GetType(component)); //AddComponent(Type.GetType(scriptName + “, ” + assemblyName));
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Sphere), component);
                 break;
             case E_PRIMITIVE_STATE.CAPSULE:
-                GameObject capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-                capsule.transform.position = Vector3.zero;
-                capsule.name = component;
-                capsule.AddComponent(System.Type.GetType(component));
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Capsule), component);
                 break;
             case E_PRIMITIVE_STATE.CYLINDER:
-                GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                cylinder.transform.position = Vector3.zero;
-                cylinder.name = component;
-                cylinder.AddComponent(System.Type.GetType(component));
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Cylinder), component);
                 break;
             case E_PRIMITIVE_STATE.PLANE:
-                GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-                plane.transform.position = Vector3.zero;
-                plane.name = component;
-                plane.AddComponent(System.Type.GetType(component));
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Plane), component);
                 break;
             case E_PRIMITIVE_STATE.QUAD:
-                GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                quad.transform.position = Vector3.zero;
-                quad.name = component;
-                quad.AddComponent(System.Type.GetType(component));
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Quad), component);
                 break;
             default:
                 Debug.LogError("Unrecognized Option");
                 break;
         }
+    }
+
+    GameObject CreatePrimitive(GameObject a_go, string a_component)
+    {
+        a_go.transform.position = Vector3.zero;
+        a_go.name = a_component;
+        a_go.AddComponent(GetAssemblyType(a_component));
+        Selection.activeGameObject = a_go;
+        Undo.RegisterCreatedObjectUndo(a_go, "Creating " + a_go.name);
+        return a_go;
+    }
+
+    // https://forum.unity.com/threads/generating-a-script-then-using-addcomponent-to-attach-it-to-a-gameobject.299685/#post-1974265
+    // https://blogs.unity3d.com/2015/01/21/addcomponentstring-api-removal-in-unity-5-0/#comment-210882
+    // AddComponent(Type.GetType(scriptName + “, ” + assemblyName));
+    public static System.Type GetAssemblyType(string typeName)
+    {
+        var type = System.Type.GetType(typeName);
+        if (type != null) return type;
+        foreach (var a in System.AppDomain.CurrentDomain.GetAssemblies())
+        {
+            type = a.GetType(typeName);
+            if (type != null) return type;
+        }
+        return null;
     }
     #endregion
 

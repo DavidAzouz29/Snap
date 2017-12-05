@@ -110,7 +110,7 @@ public class BlocklyPlayground : ScriptableObject
 
     static void SaveToFile(string a_ex)
     {
-        string location = Path.Combine(Application.dataPath, "Snapper/Code/");// FileUtil.GetUniqueTempPathInProject();
+        string location = Path.Combine(Application.dataPath, "Snapper/Code/");
         string filename = "SnapperCode";
 
         if (!Directory.Exists(location))
@@ -144,20 +144,28 @@ public class BlocklyPlayground : ScriptableObject
             // Replacing content within the script template.
             //----------------------------------------------
             string fileContent = File.ReadAllText(result);
-            // Add components for physics
-            if (EditorGUIUtility.systemCopyBuffer.Contains("rigidbody"))
-            {
-                fileContent = fileContent.Replace("public", "[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]" + Environment.NewLine + "public");
-            }
             filename = Path.GetFileNameWithoutExtension(path);
+            // Add components for physics
+            if (EditorGUIUtility.systemCopyBuffer.Contains("Rigidbody"))
+            {
+                // "public class" for peace of mind.
+                fileContent = fileContent.Replace("public class", 
+                    "[RequireComponent(typeof(Rigidbody))]" + 
+                    Environment.NewLine + "public class"); //, typeof(BoxCollider)
+            }
             fileContent = fileContent.Replace("#SCRIPTNAME#", filename);
+            // TODO: Insert variables based on ex.
             fileContent = fileContent.Replace("MonoBehaviour {", "MonoBehaviour {" +
-                Environment.NewLine + Environment.NewLine + "// Variables go here" + Environment.NewLine);
+                Environment.NewLine + Environment.NewLine + "\t// Variables" + Environment.NewLine);
+            // Find the first "#NOTRIM#", this will fill in the Start Func.
             var regex = new System.Text.RegularExpressions.Regex(System.Text.RegularExpressions.Regex.Escape("#NOTRIM#"));
             var newText = regex.Replace(fileContent, "", 1); // Start Func.
-            fileContent = newText.Replace("#NOTRIM#", EditorGUIUtility.systemCopyBuffer); // Update - Replace 2nd NOTRIM with generated code.
+            // Update - Replace 2nd NOTRIM with generated code.
+            fileContent = newText.Replace("#NOTRIM#", EditorGUIUtility.systemCopyBuffer);
             //----------------------------------------------
-            // TODO: Insert variables based on ex.
+            // Include our comments at the top of the file.
+            fileContent = File.ReadAllText(GenerateCommentsToFile()) + fileContent;
+            //----------------------------------------------
             UTF8Encoding encoding = new UTF8Encoding(true);
             File.WriteAllText(path, fileContent, encoding); //TODO: why not Encoding.UTF8?
             AssetDatabase.Refresh();
@@ -165,6 +173,31 @@ public class BlocklyPlayground : ScriptableObject
             //----------------------------------------------
             Debug.LogFormat("File saved at {0}.", path);
         }
+    }
+
+    /// <summary>
+    /// e.g. File.ReadAllText(GenerateCommentsToFile())
+    /// </summary>
+    /// <returns>Path to where the comments will be temperarily stored.</returns>
+    static string GenerateCommentsToFile()
+    {
+        string copyPath = FileUtil.GetUniqueTempPathInProject();
+        using (StreamWriter comments = new StreamWriter(copyPath))
+        {
+            comments.WriteLine("/// ------------------------------------------------");
+            comments.WriteLine("/// <summary>");
+            comments.WriteLine("/// Author: " + SystemInfo.deviceName + " - Created with Snapper!");
+            comments.WriteLine("/// Date: " + DateTime.Today.ToShortDateString());
+            comments.WriteLine("/// ------------------------------------------------");
+            comments.WriteLine("/// Brief: *Describe the script here*");
+            comments.WriteLine("/// ");
+            comments.WriteLine("/// viewed: ");
+            comments.WriteLine("/// ");
+            comments.WriteLine("/// </summary>");
+            comments.WriteLine("/// ------------------------------------------------");
+            comments.WriteLine("");
+        } //File written
+        return copyPath;
     }
 
     [MenuItem(snapperPath + "Publish/Steam Direct %#&p")]

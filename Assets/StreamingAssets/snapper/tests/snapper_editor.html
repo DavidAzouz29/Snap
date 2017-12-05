@@ -440,8 +440,10 @@ function start() {
                   Log events: &nbsp;
                   <input type="checkbox" onclick="logEvents(this.checked)" id="logCheck">
                 </p>
-                <!-- Imported Snapper Blockly Blocks -->
-                <xml id = "toolbox-snapper" src = "toolbox-snapper.xml"></xml>
+                <!-- Imported Snapper Blockly Blocks - ->
+                <xml id="toolbox-snapper" src="toolbox-snapper.xml"></xml>
+                <script id="toolbox-snapper" type="text/xml" src="toolbox-snapper.xml"></script>
+                alert(document.getElementById('toolbox-snapper').innerHTML); -->
 
                 <xml id="toolbox-simple" style="display: none">
                   <block type="controls_ifelse"></block>
@@ -642,6 +644,7 @@ function start() {
                       </value>
                     </block>
                     <block type="move_rotate">
+                      <field name="orientation">clockwise</field>
                       <field name="speed">speedMedium</field>
                       <value name="Vector">
                         <block type="move_facing">
@@ -649,8 +652,26 @@ function start() {
                         </block>
                       </value>
                     </block>
+                    <block type="move_rotate_angle">
+                      <field name="orientation">clockwise</field>
+                      <field name="angle">90</field>
+                      <value name="Vector">
+                        <block type="move_facing">
+                          <field name="direction">Forward</field>
+                        </block>
+                      </value>
+                    </block>
                     <block type="move_scale">
                       <field name="scale">scaleMedium</field>
+                    </block>
+                    <block type="move_direction">
+                      <field name="orientation">clockwise</field>
+                      <field name="angle">90</field>
+                      <value name="Vector">
+                        <block type="move_facing">
+                          <field name="direction">Up</field>
+                        </block>
+                      </value>
                     </block>
                   </category>
                   <category name="Text" colour="160">

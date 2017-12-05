@@ -177,6 +177,7 @@
       <field name="OP">plusEqual</field>
     </block>
     <block type="move_rotate">
+      <field name="orientation">clockwise</field>
       <field name="speed">speedMedium</field>
       <value name="Vector">
         <block type="move_facing">
@@ -184,8 +185,26 @@
         </block>
       </value>
     </block>
+    <block type="move_rotate_angle">
+      <field name="orientation">clockwise</field>
+      <field name="angle">90</field>
+      <value name="Vector">
+        <block type="move_facing">
+          <field name="direction">Forward</field>
+        </block>
+      </value>
+    </block>
     <block type="move_scale">
       <field name="scale">scaleMedium</field>
+    </block>
+    <block type="move_direction">
+      <field name="orientation">clockwise</field>
+      <field name="angle">90</field>
+      <value name="Vector">
+        <block type="move_facing">
+          <field name="direction">Up</field>
+        </block>
+      </value>
     </block>
   </category>
   <category name="Text" colour="160">

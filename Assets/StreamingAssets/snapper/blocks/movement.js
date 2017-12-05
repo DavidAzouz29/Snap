@@ -66,9 +66,28 @@ Blockly.Blocks['move_rotate'] = {
   init: function() {
     this.appendValueInput("Vector")
         .setCheck("Vector")
-        .appendField("Rotate");
+        .appendField("Rotate")
+        .appendField(new Blockly.FieldDropdown([["clockwise","clockwise"], ["anticlockwise","anticlockwise"]]), "orientation");
     this.appendDummyInput()
         .appendField(new Blockly.FieldDropdown([["speed slow","speedSlow"], ["speed medium","speedMedium"], ["speed fast","speedFast"]]), "speed");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(210);
+ this.setTooltip("");
+ this.setHelpUrl("https://docs.unity3d.com/ScriptReference/Transform.Rotate.html");
+  }
+};
+
+Blockly.Blocks['move_rotate_angle'] = {
+  init: function() {
+    this.appendValueInput("Vector")
+        .setCheck("Vector")
+        .appendField("Rotate")
+        .appendField(new Blockly.FieldDropdown([["clockwise","clockwise"], ["anticlockwise","anticlockwise"]]), "orientation");
+    this.appendDummyInput()
+        .appendField("Angle")
+        .appendField(new Blockly.FieldAngle(90), "angle");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -111,5 +130,23 @@ Blockly.Blocks['move_speed'] = {
     this.setColour(230);
  this.setTooltip("Speed at which we travel.");
  this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['move_direction'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Direction")
+        .appendField(new Blockly.FieldDropdown([["clockwise","clockwise"], ["anticlockwise","anticlockwise"]]), "orientation")
+        .appendField("angle")
+        .appendField(new Blockly.FieldAngle(90), "angle");
+    this.appendValueInput("Vector")
+        .setCheck("Vector");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(210);
+ this.setTooltip("");
+ this.setHelpUrl("https://docs.unity3d.com/ScriptReference/Quaternion.AngleAxis.html");
   }
 };

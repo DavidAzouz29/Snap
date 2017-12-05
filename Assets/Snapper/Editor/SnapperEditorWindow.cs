@@ -31,6 +31,7 @@ public class SnapperEditorWindow : EditorWindow
     const float fButtonHeight = fButtonWidth * 0.5f; // Multiple of 8.
     const float fWinMinHeight = fButtonHeight + (fPadding * 5f);
     GUILayoutOption buttonSmallWidth = GUILayout.Width(fButtonWidth * 0.5f);
+    static string lastSnapperComponent = "";
 
     public E_PRIMITIVE_STATE op;
     /*static SnapperEditorWindow()
@@ -56,6 +57,7 @@ public class SnapperEditorWindow : EditorWindow
         window.minSize = new Vector2(350f,  fWinMinHeight);
         window.maxSize = new Vector2(4004f, fWinMinHeight);
         window.titleContent = titleContent;
+        lastSnapperComponent = BlocklyPlayground.LastSnapperComponent;
     }
 
 	#region GUI
@@ -66,7 +68,7 @@ public class SnapperEditorWindow : EditorWindow
         UISystemProfilerApi.BeginSample(UISystemProfilerApi.SampleType.Render);
 
         EditorGUILayout.BeginHorizontal("Box", GUILayout.Height(fButtonHeight));
-        // Small Buttons
+        #region Small Buttons
         EditorGUILayout.BeginVertical(buttonSmallWidth);
         if (GUILayout.Button((Texture)EditorGUIUtility.Load("Icons/Snapper.png")))//, "|Open Snapper Editor."))
         {
@@ -100,7 +102,7 @@ public class SnapperEditorWindow : EditorWindow
         // Create primitive with our most recent Snapper script.
         EditorGUILayout.BeginVertical();
         op = (E_PRIMITIVE_STATE)EditorGUILayout.EnumPopup("Primitive to create:", op);
-        EditorGUILayout.LabelField(string.Format("Last Snapper Script: \"{0}\"", BlocklyPlayground.LastSnapperScript));
+        EditorGUILayout.LabelField(string.Format("Last Snapper Script: \"{0}\"", BlocklyPlayground.LastSnapperComponent));
 
         // If we're not compiling...
         if (!EditorApplication.isCompiling)
@@ -132,27 +134,27 @@ public class SnapperEditorWindow : EditorWindow
 
     void InstantiatePrimitive(E_PRIMITIVE_STATE op)
     {
-        string component = BlocklyPlayground.LastSnapperScript != null ? BlocklyPlayground.LastSnapperScript : "PlayerMovement";
+        lastSnapperComponent = BlocklyPlayground.LastSnapperComponent;
 
         switch (op)
         {
             case E_PRIMITIVE_STATE.CUBE:
-                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Cube), component);
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Cube), lastSnapperComponent);
                 break;
             case E_PRIMITIVE_STATE.SPHERE:
-                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Sphere), component);
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Sphere), lastSnapperComponent);
                 break;
             case E_PRIMITIVE_STATE.CAPSULE:
-                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Capsule), component);
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Capsule), lastSnapperComponent);
                 break;
             case E_PRIMITIVE_STATE.CYLINDER:
-                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Cylinder), component);
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Cylinder), lastSnapperComponent);
                 break;
             case E_PRIMITIVE_STATE.PLANE:
-                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Plane), component);
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Plane), lastSnapperComponent);
                 break;
             case E_PRIMITIVE_STATE.QUAD:
-                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Quad), component);
+                CreatePrimitive(GameObject.CreatePrimitive(PrimitiveType.Quad), lastSnapperComponent);
                 break;
             default:
                 Debug.LogError("Unrecognized Option");

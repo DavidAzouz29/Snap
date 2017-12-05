@@ -14,7 +14,7 @@ Blockly.JavaScript['math_vector3'] = function(block) {
   var value_v3 = Blockly.JavaScript.valueToCode(block, 'v3', Blockly.JavaScript.ORDER_NEW);
   // TODO: Assemble JavaScript into code variable.
   //var code = 'new Vector3({0}, {1}, {2})'.format(number_x, number_y, number_z);
-  var code = ' = new Vector3(' + number_x + ', ' + number_y + ', ' + number_z + ')'; //;\n
+  var code = 'Vector3(' + number_x + ', ' + number_y + ', ' + number_z + ')'; //;\n
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.JavaScript.ORDER_ASSIGNMENT];
 };
@@ -63,27 +63,68 @@ Blockly.JavaScript['move_move'] = function(block) {
 };
 
 Blockly.JavaScript['move_rotate'] = function(block) {
+  var dropdown_orientation = block.getFieldValue('orientation');
   var value_vector = Blockly.JavaScript.valueToCode(block, 'Vector', Blockly.JavaScript.ORDER_NONE);
   var dropdown_speed = block.getFieldValue('speed');
   // TODO: Assemble JavaScript into code variable.
+  var ori = '';
+  switch (dropdown_orientation) {
+    case 'clockwise':
+      ori = '';
+      break;
+      case 'anticlockwise':
+        ori = '-';
+        break;
+    default:
+      ori = '';
+      break;
+  }
+
   if(value_vector == null)
     value_vector = 'Vector3.up'
-    var speed = '0f';
+
+    var speed = '0';
     switch (dropdown_speed) {
       case 'speedSlow':
-        speed = '90f';
+        speed = '90';
         break;
         case 'speedMedium':
-          speed = '180f';
+          speed = '180';
           break;
           case 'speedFast':
-            speed = '270f';
+            speed = '270';
             break;
       default:
-      speed = '2f';
+      speed = '2';
       break;
     }
-  var code = 'transform.Rotate(' + value_vector + ' * Time.deltaTime * ' + speed + ');\n';
+  var code = 'transform.Rotate(' + ori + value_vector + ' * Time.deltaTime * ' + speed + 'f);\n';
+  return code;
+};
+
+Blockly.JavaScript['move_rotate_angle'] = function(block) {
+  var dropdown_orientation = block.getFieldValue('orientation');
+  var value_vector = Blockly.JavaScript.valueToCode(block, 'Vector', Blockly.JavaScript.ORDER_NONE);
+  var angle_angle = block.getFieldValue('angle');
+  // TODO: Assemble JavaScript into code variable.
+  // TODO: Assemble JavaScript into code variable.
+  var ori = '';
+  switch (dropdown_orientation) {
+    case 'clockwise':
+      ori = '';
+      break;
+      case 'anticlockwise':
+        ori = '-';
+        break;
+    default:
+      ori = '';
+      break;
+  }
+
+  if(value_vector == null)
+    value_vector = 'Vector3.up'
+
+  var code = 'transform.Rotate(' + ori + value_vector + ' * Time.deltaTime * ' + angle_angle + 'f);\n';
   return code;
 };
 
@@ -157,4 +198,27 @@ Blockly.JavaScript['move_speed'] = function(block) {
   }
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+Blockly.JavaScript['move_direction'] = function(block) {
+  var dropdown_orientation = block.getFieldValue('orientation');
+  var angle_angle = block.getFieldValue('angle');
+  var value_vector = Blockly.JavaScript.valueToCode(block, 'Vector', Blockly.JavaScript.ORDER_NONE);
+  // TODO: Assemble JavaScript into code variable.
+  var ori = '';
+  switch (dropdown_orientation) {
+    case 'clockwise':
+      ori = '';
+      break;
+      case 'anticlockwise':
+        ori = '-';
+        break;
+    default:
+      ori = '';
+      break;
+  }
+  var code = 'transform.localRotation = Quaternion.Slerp(transform.localRotation, ' +
+            'Quaternion.AngleAxis(' + ori + angle_angle + 'f, ' + value_vector + '), ' +
+            'Time.deltaTime * ' + angle_angle + 'f / 36f);\n';
+  return code;
 };

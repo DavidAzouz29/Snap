@@ -42,7 +42,31 @@ public class BlocklyPlayground : ScriptableObject
     //static Type webView;
     static Type webViewType;
 
-    public static string LastSnapperScript { get; private set; }
+    // LastSnapperComponent for GO Primitive
+    public static string LastSnapperComponent
+    {
+        get
+        {
+            if(EditorPrefs.HasKey("SnapperLastComponent"))
+            {
+                return EditorPrefs.GetString("SnapperLastComponent");
+            }
+            // If we're null
+            else
+            {
+                return EditorPrefs.GetString("SnapperLastComponent", "PlayerMovement");
+            }
+        }
+        private set
+        {
+            if (value == LastSnapperComponent)
+            {
+                return;
+            }
+
+            EditorPrefs.SetString("SnapperLastComponent", value);
+        }
+    }
 
     #region SnapperWindows
     public const string snapperPath = "Window/Snapper/";
@@ -156,7 +180,8 @@ public class BlocklyPlayground : ScriptableObject
             fileContent = fileContent.Replace("#SCRIPTNAME#", filename);
             // TODO: Insert variables based on ex.
             fileContent = fileContent.Replace("MonoBehaviour {", "MonoBehaviour {" +
-                Environment.NewLine + Environment.NewLine + "\t// Variables" + Environment.NewLine);
+                Environment.NewLine + Environment.NewLine + "\t#region Variables" + 
+                Environment.NewLine + Environment.NewLine + "\t#endregion" + Environment.NewLine);
             // Find the first "#NOTRIM#", this will fill in the Start Func.
             var regex = new System.Text.RegularExpressions.Regex(System.Text.RegularExpressions.Regex.Escape("#NOTRIM#"));
             var newText = regex.Replace(fileContent, "", 1); // Start Func.
@@ -169,7 +194,7 @@ public class BlocklyPlayground : ScriptableObject
             UTF8Encoding encoding = new UTF8Encoding(true);
             File.WriteAllText(path, fileContent, encoding); //TODO: why not Encoding.UTF8?
             AssetDatabase.Refresh();
-            LastSnapperScript = filename;
+            LastSnapperComponent = filename;
             //----------------------------------------------
             Debug.LogFormat("File saved at {0}.", path);
         }

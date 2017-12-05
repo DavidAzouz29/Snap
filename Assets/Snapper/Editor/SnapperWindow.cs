@@ -13,7 +13,7 @@ using UnityEngine.Video;
 using UnityEngine.VR;
 using UnityEditor;
 using System.Linq;
-using Polyglot;
+//using Polyglot;
 
 using UnityEditorInternal;
 //using UnityEngine.Experimental.UIElements;
@@ -102,7 +102,7 @@ public class SnapperWindow : EditorWindow
         //GenerateHeadings();
     }
 
-    [MenuItem("Snapper/Snapper Old &s")]
+    [MenuItem("Snapper/Snapper Old #s")]
     public static void ShowWindow()
     {
         // Shows an instance of custom window, SnapperWindow
@@ -162,7 +162,7 @@ public class SnapperWindow : EditorWindow
 		GUISkin _editorSkin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
 
 		//GUILayout.BeginArea(headingsRect, GUI.skin.box);
-		DrawMenu();
+		//DrawMenu();
 		DrawHeadings();
         //GUILayout.EndArea();
 
@@ -358,7 +358,7 @@ public class SnapperWindow : EditorWindow
 
 	void DrawMenu()
 	{
-		string[] menuItems = new string[] { "File", Localization.Get("MENU_LABEL_CONFIRM_BUTTON") };
+		/*string[] menuItems = new string[] { "File", Localization.Get("MENU_LABEL_CONFIRM_BUTTON") };
 		EditorGUILayout.BeginHorizontal("Box");
 		GUILayout.Toolbar(SelGridInt, menuItems, EditorStyles.toolbar);
 
@@ -384,7 +384,7 @@ public class SnapperWindow : EditorWindow
 		}
 		EditorGUILayout.EndHorizontal();
 
-		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.EndHorizontal();*/
 	}
 
     void DrawHeadings()
@@ -490,8 +490,8 @@ public class SnapperWindow : EditorWindow
     /// </summary>
     void GenerateHeadings()
     {
-        var assembly = System.Reflection.Assembly.GetAssembly(typeof(Component));
-        var assemblyMesh = System.Reflection.Assembly.GetAssembly(typeof(Mesh));
+        //var assembly = System.Reflection.Assembly.GetAssembly(typeof(Component));
+        //var assemblyMesh = System.Reflection.Assembly.GetAssembly(typeof(Mesh));
 
     }
 

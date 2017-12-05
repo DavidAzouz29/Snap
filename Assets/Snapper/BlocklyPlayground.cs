@@ -42,6 +42,8 @@ public class BlocklyPlayground : ScriptableObject
     //static Type webView;
     static Type webViewType;
 
+    public static string LastSnapperScript { get; private set; }
+
     #region SnapperWindows
     public const string snapperPath = "Window/Snapper/";
 
@@ -52,7 +54,7 @@ public class BlocklyPlayground : ScriptableObject
         OpenWebViewEditorWindowTabs("Snapper Editor",
             "file:///Assets/StreamingAssets/snapper/tests/snapper_editor.html");
     }
-	/*
+    /*
     //[EditorWindowTitle(title = "Snapper Playground", useTypeNameAsIconName = true)]
     [MenuItem(snapperPath + "Snapper Playground %#&s")]
     static void OpenSnapperPlayground()
@@ -90,7 +92,7 @@ public class BlocklyPlayground : ScriptableObject
     {
         OpenWebViewEditorWindowTabs("Test Webpage",
             "http://output.jsbin.com/awenaq/3");
-            //"https://clipboardjs.com/");
+        //"https://clipboardjs.com/");
     }
     #endregion
 
@@ -121,7 +123,7 @@ public class BlocklyPlayground : ScriptableObject
         //----------------------------------------------
         // Copy script from Unity templates.
         //----------------------------------------------
-        if (path != null)
+        if (path != "")
         {
             string templatePath = Path.Combine(EditorApplication.applicationContentsPath, "Resources/ScriptTemplates");
             string result = "";
@@ -142,16 +144,24 @@ public class BlocklyPlayground : ScriptableObject
             // Replacing content within the script template.
             //----------------------------------------------
             string fileContent = File.ReadAllText(result);
-            fileContent = fileContent.Replace("#SCRIPTNAME#", Path.GetFileNameWithoutExtension(path));
+            // Add components for physics
+            if (EditorGUIUtility.systemCopyBuffer.Contains("rigidbody"))
+            {
+                fileContent = fileContent.Replace("public", "[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]" + Environment.NewLine + "public");
+            }
+            filename = Path.GetFileNameWithoutExtension(path);
+            fileContent = fileContent.Replace("#SCRIPTNAME#", filename);
+            fileContent = fileContent.Replace("MonoBehaviour {", "MonoBehaviour {" +
+                Environment.NewLine + Environment.NewLine + "// Variables go here" + Environment.NewLine);
             var regex = new System.Text.RegularExpressions.Regex(System.Text.RegularExpressions.Regex.Escape("#NOTRIM#"));
             var newText = regex.Replace(fileContent, "", 1); // Start Func.
             fileContent = newText.Replace("#NOTRIM#", EditorGUIUtility.systemCopyBuffer); // Update - Replace 2nd NOTRIM with generated code.
-            //fileContent = fileContent.Replace("Update() {", "Update() {" + Environment.NewLine + EditorGUIUtility.systemCopyBuffer);
             //----------------------------------------------
             // TODO: Insert variables based on ex.
             UTF8Encoding encoding = new UTF8Encoding(true);
             File.WriteAllText(path, fileContent, encoding); //TODO: why not Encoding.UTF8?
             AssetDatabase.Refresh();
+            LastSnapperScript = filename;
             //----------------------------------------------
             Debug.LogFormat("File saved at {0}.", path);
         }
@@ -194,7 +204,7 @@ public class BlocklyPlayground : ScriptableObject
             {
                 a_windowTitle,
                 a_path,
-                200, 500, 800, 600 //int minWidth, int minHeight, int maxWidth, int maxHeight
+                200, 450, 800, 600 //int minWidth, int minHeight, int maxWidth, int maxHeight
             });
     }
 

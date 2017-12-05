@@ -12,7 +12,12 @@
 /Assets/Editor Default Resources/Nodes*
 /Assets/Editor Default Resources/Utilities*
 /Assets/WebPlayerTemplates*
+# Docs
+/!Docs*
+/!Docs/Polyglot*
+/!Docs/UnityEditorDecomp*
 
+/
 # Visual Studio 2017 cache directory
 /.vs/
 

@@ -32,7 +32,7 @@
 <script src="https://blockly-demo.appspot.com/static/generators/python/colour.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/python/variables.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/python/procedures.js"></script>
-<script src="https://blockly-demo.appspot.com/static/generators/php.js"></script>
+<!--<script src="https://blockly-demo.appspot.com/static/generators/php.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/php/logic.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/php/loops.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/php/math.js"></script>
@@ -49,7 +49,7 @@
 <script src="https://blockly-demo.appspot.com/static/generators/lua/lists.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/lua/colour.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/lua/variables.js"></script>
-<script src="https://blockly-demo.appspot.com/static/generators/lua/procedures.js"></script>
+<script src="https://blockly-demo.appspot.com/static/generators/lua/procedures.js"></script>-->
 <script src="https://blockly-demo.appspot.com/static/generators/dart.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/dart/logic.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/dart/loops.js"></script>
@@ -132,10 +132,13 @@ function start() {
           document.getElementById('importExport').value = text;
         }
         // Restore event logging state.
-        var state = sessionStorage.getItem('logEvents');
-        logEvents(Boolean(Number(state)));
+        var state = sessionStorage.getItem('liveUpdates');
+        liveUpdates(Boolean(Number(state)));
+        var stateLog = sessionStorage.getItem('logEvents');
+        logEvents(Boolean(Number(stateLog)));
       } else {
         // MSIE 11 does not support sessionStorage on file:// URLs.
+        liveUpdates(true);
         logEvents(false);
       }
       taChange();
@@ -200,24 +203,41 @@ function start() {
     document.getElementById('import').disabled = !valid;
   }
 
-  function logEvents(state) {
-    var checkbox = document.getElementById('logCheck');
+  function liveUpdates(state) {
+    var checkbox = document.getElementById('liveCheck');
     checkbox.checked = state;
     if (sessionStorage) {
       sessionStorage.setItem('logEvents', Number(state));
     }
     if (state) {
+      workspace.addChangeListener(loggerTextarea);
+    } else {
+      workspace.removeChangeListener(loggerTextarea);
+    }
+  }
+
+  function logEvents(stateLog) {
+    var checkbox = document.getElementById('logCheck');
+    checkbox.checked = stateLog;
+    if (sessionStorage) {
+      sessionStorage.setItem('logEvents', Number(stateLog));
+    }
+    if (stateLog) {
       workspace.addChangeListener(logger);
     } else {
       workspace.removeChangeListener(logger);
     }
   }
 
+  function loggerTextarea(e) {
+    toCode('JavaScript');
+  }
+
   function logger(e) {
     console.log(e);
   }
 
-  function airstrike(n) {
+  /*function airstrike(n) {
     var prototypes = [];
     var toolbox = getToolboxElement();
     var blocks = toolbox.getElementsByTagName('block');
@@ -335,7 +355,7 @@ function start() {
               '    </value>',
               '    <statement name="DO0"></statement>',
               '    <next></next>',
-              '  </block>'].join('\n');
+              '  </block>'].join('\n');*/
 
               </script>
 
@@ -355,7 +375,7 @@ function start() {
               #blocklyDiv {
                 float: right;
                 height: 95%;
-                width: 70%;
+                width: 60%;
               }
               #importExport {
                 font-family: monospace;
@@ -398,14 +418,14 @@ function start() {
                   &nbsp;
                   <input type="button" value="Import from XML" onclick="fromXml()" id="import">
                   <br>
-                  <input type="button" id="toCodeJs" value="To JavaScript" onclick="toCode('JavaScript')" data-clipboard-target = "#importExport">
+                  <input type="button" id="toCodeJs" value="To C#" onclick="toCode('JavaScript')" data-clipboard-target = "#importExport">
                   &nbsp;
                   <input type="button" id="toCodePy" value="To Python" onclick="toCode('Python')">
                   &nbsp;
-                  <input type="button" id="toCodePhp" value="To PHP" onclick="toCode('PHP')">
+                  <!--<input type="button" id="toCodePhp" value="To PHP" onclick="toCode('PHP')">
                   &nbsp;
                   <input type="button" id="toCodeLua" value="To Lua" onclick="toCode('Lua')">
-                  &nbsp;
+                  &nbsp;-->
                   <input type="button" id="toCodeDart" value="To Dart" onclick="toCode('Dart')">
                   <br>
                   <!-- Target -->
@@ -430,14 +450,16 @@ function start() {
                   </script>
                 </p>
 
-                <p>
+                <!--<p>
                   Stress test: &nbsp;
                   <input type="button" value="Airstrike!" onclick="airstrike(100)">
                   <input type="button" value="Spaghetti!" onclick="spaghetti(8)">
                   <input type="button" value="Fake some drags!" onclick="fakeManyDrags()">
-                </p>
+                </p>-->
                 <p>
-                  Log events: &nbsp;
+                  Live Updates:
+                  <input type="checkbox" onclick="liveUpdates(this.checked)" id="liveCheck">
+                  Log events:
                   <input type="checkbox" onclick="logEvents(this.checked)" id="logCheck">
                 </p>
                 <!-- Imported Snapper Blockly Blocks - ->

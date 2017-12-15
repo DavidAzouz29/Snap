@@ -150,3 +150,22 @@ Blockly.Blocks['move_direction'] = {
  this.setHelpUrl("https://docs.unity3d.com/ScriptReference/Quaternion.AngleAxis.html");
   }
 };
+
+Blockly.Blocks['move_jump'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Jump");
+    this.appendValueInput("Dir")
+        .setCheck("Vector")
+        .appendField("Direction");
+    this.appendValueInput("Speed")
+        .setCheck(null)
+        .appendField("Speed");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("https://docs.unity3d.com/ScriptReference/Rigidbody.AddForce.html");
+ this.setHelpUrl("");
+  }
+};

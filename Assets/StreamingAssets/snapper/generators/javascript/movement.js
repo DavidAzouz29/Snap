@@ -222,3 +222,10 @@ Blockly.JavaScript['move_direction'] = function(block) {
             'Time.deltaTime * ' + angle_angle + 'f / 36f);\n';
   return code;
 };
+
+Blockly.JavaScript['move_jump'] = function(block) {
+  var value_dir = Blockly.JavaScript.valueToCode(block, 'Dir', Blockly.JavaScript.ORDER_NONE);
+  var value_speed = Blockly.JavaScript.valueToCode(block, 'Speed', Blockly.JavaScript.ORDER_ATOMIC);
+  var code = 'rigidbody.AddForce(' + value_dir + ' * ' + value_speed + 'f, ForceMode.Acceleration);\n';
+  return code;
+};

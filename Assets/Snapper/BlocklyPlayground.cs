@@ -169,24 +169,19 @@ public class BlocklyPlayground : ScriptableObject
             //----------------------------------------------
             string fileContent = File.ReadAllText(result);
             filename = Path.GetFileNameWithoutExtension(path);
-            // Add components for physics
-            if (EditorGUIUtility.systemCopyBuffer.Contains("Rigidbody"))
-            {
-                // "public class" for peace of mind.
-                fileContent = fileContent.Replace("public class", 
-                    "[RequireComponent(typeof(Rigidbody))]" + 
-                    Environment.NewLine + "public class"); //, typeof(BoxCollider)
-            }
+            // Cross Platform New Line Character.
+            fileContent = fileContent.Replace("\n", Environment.NewLine);
             fileContent = fileContent.Replace("#SCRIPTNAME#", filename);
-            // TODO: Insert variables based on ex.
-            fileContent = fileContent.Replace("MonoBehaviour {", "MonoBehaviour {" +
-                Environment.NewLine + Environment.NewLine + "\t#region Variables" + 
-                Environment.NewLine + Environment.NewLine + "\t#endregion" + Environment.NewLine);
+            // Variables
+            string start = "";
+            fileContent = GenerateVariables(fileContent, ref start);
             // Find the first "#NOTRIM#", this will fill in the Start Func.
             var regex = new System.Text.RegularExpressions.Regex(System.Text.RegularExpressions.Regex.Escape("#NOTRIM#"));
-            var newText = regex.Replace(fileContent, "", 1); // Start Func.
+            var newText = regex.Replace(fileContent, start, 1); // Start Func.
             // Update - Replace 2nd NOTRIM with generated code.
-            fileContent = newText.Replace("#NOTRIM#", EditorGUIUtility.systemCopyBuffer);
+            string tabbedClipboard = EditorGUIUtility.systemCopyBuffer.Replace(Environment.NewLine, Environment.NewLine + "\t\t");
+            fileContent = newText.Replace("#NOTRIM#", tabbedClipboard);
+
             //----------------------------------------------
             // Include our comments at the top of the file.
             fileContent = File.ReadAllText(GenerateCommentsToFile()) + fileContent;
@@ -198,6 +193,75 @@ public class BlocklyPlayground : ScriptableObject
             //----------------------------------------------
             Debug.LogFormat("File saved at {0}.", path);
         }
+    }
+
+    /// <summary>
+    /// e.g. fileContent = GenerateVariables(fileContent);
+    /// </summary>
+    /// <param name="a_fileContent">fileContent</param>
+    /// <returns></returns>
+    static string GenerateVariables(string a_fileContent, ref string start)
+    {
+        string variables = "";
+
+        // Add components for physics
+        // TODO: find a way to populate this list.
+        string[] components = new string[] { "Rigidbody" }; //, "BoxCollider"
+        System.Collections.Generic.List<string> args = new System.Collections.Generic.List<string>(3);
+        for (int i = 0; i < components.Length; i++)
+        {
+            // If our generated code contains any of our desired components.
+            if (EditorGUIUtility.systemCopyBuffer.Contains(components[i].ToLower()))
+            {
+                args.Add(components[i]);
+                // TODO: find a better way to do variables (naming).
+                variables += string.Format("\t{0} {1};{2}", components[i], //RECODE: ToPascalCase? what about BoxCollider?
+                    components[i].ToLower(), Environment.NewLine);
+                start += string.Format("{0} = GetComponent<{1}>();{2}\t\t", components[i].ToLower(), components[i], Environment.NewLine);
+            }
+        }
+        if (args.Count != 0)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("[RequireComponent(");
+            bool flag = true;
+            // RequireComponent can only support up to three requirements.
+            for (int i = 0; i < args.Count && i < 3; i++)
+            {
+                object obj = args[i];
+                if (!flag)
+                {
+                    stringBuilder.Append(", ");
+                }
+                bool flag2 = obj is string;
+                if (flag2)
+                {
+                    stringBuilder.Append("typeof(");
+                }
+                stringBuilder.Append(obj);
+                if (flag2)
+                {
+                    stringBuilder.Append(')');
+                }
+                flag = false;
+            }
+            stringBuilder.AppendLine(")]");
+            // "public class" for peace of mind.
+            stringBuilder.Append("public class");
+            a_fileContent = a_fileContent.Replace("public class", stringBuilder.ToString());
+        }
+
+        // TODO: Insert variables based on ex.
+        string[] vars = new string[] { "float foo = 1.0f;", "int bar = 0;" };
+        for (int i = 0; i < vars.Length; i++)
+        {
+            variables += string.Format("\t{0}" + Environment.NewLine, vars[i]);
+        }
+        a_fileContent = a_fileContent.Replace("MonoBehaviour {", "MonoBehaviour {" +
+            Environment.NewLine + Environment.NewLine + "\t#region Variables" +
+            Environment.NewLine + variables +
+            Environment.NewLine + "\t#endregion" + Environment.NewLine);
+        return a_fileContent;
     }
 
     /// <summary>
@@ -277,7 +341,7 @@ public class BlocklyPlayground : ScriptableObject
         });
     }
 
-    #region Serialisation
+#region Serialisation
     //this.InvokeJSMethod("document.AssetStore.login", "logout", new object[0]);
     //https://blockly-demo.appspot.com/static/tests/playground.html toXML()
     public void ExportToXML()
@@ -326,7 +390,7 @@ public class BlocklyPlayground : ScriptableObject
         }
         document.getElementById("import").disabled = !valid;*/
     }
-    #endregion
+#endregion
 
     /*function GetUserName()
     {

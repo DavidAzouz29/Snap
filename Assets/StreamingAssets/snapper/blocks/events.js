@@ -10,6 +10,18 @@ Blockly.Blocks['events_update'] = {
   }
 };
 
+Blockly.Blocks['events_fixed_update'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Fixed Update");
+    this.appendStatementInput("code")
+        .setCheck(null);
+    this.setColour(20);
+ this.setTooltip("Called every fixed framerate frame. Used for Physics calculations.");
+ this.setHelpUrl("https://docs.unity3d.com/ScriptReference/MonoBehaviour.FixedUpdate.html");
+  }
+};
+
 Blockly.Blocks['events_start'] = {
   init: function() {
     this.appendDummyInput()

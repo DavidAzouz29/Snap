@@ -72,7 +72,7 @@ public class BlocklyPlayground : ScriptableObject
     public const string snapperPath = "Window/Snapper/";
 
     //[EditorWindowTitle(title = "Snapper Editor", useTypeNameAsIconName = true)]
-    [MenuItem(snapperPath + "Snapper Editor &s")]
+    [MenuItem(snapperPath + "Snapper Editor &s", priority = 2)]
     public static void OpenSnapperEditor()
     {
         OpenWebViewEditorWindowTabs("Snapper Editor",
@@ -88,7 +88,7 @@ public class BlocklyPlayground : ScriptableObject
     }*/
 
     //[EditorWindowTitle(title = "Scratch Playground", useTypeNameAsIconName = true)]
-    [MenuItem(snapperPath + "Scratch Playground &#s", priority = 2)]
+    [MenuItem(snapperPath + "Scratch Playground &#s")]
     static void OpenScratchPlayground()
     {
         OpenWebViewEditorWindowTabs("Scratch Playground",
@@ -149,6 +149,7 @@ public class BlocklyPlayground : ScriptableObject
         //----------------------------------------------
         if (path != "")
         {
+            EditorPrefs.SetInt("ScriptCount", EditorPrefs.GetInt("ScriptCount") + 1);
             string templatePath = Path.Combine(EditorApplication.applicationContentsPath, "Resources/ScriptTemplates");
             string result = "";
             if (a_ex != ".js")
@@ -169,8 +170,12 @@ public class BlocklyPlayground : ScriptableObject
             //----------------------------------------------
             string fileContent = File.ReadAllText(result);
             filename = Path.GetFileNameWithoutExtension(path);
-            // Cross Platform New Line Character.
-            fileContent = fileContent.Replace("\n", Environment.NewLine);
+            // If the script template hasn't been altered...
+            if (!fileContent.Contains("\r\n"))
+            {
+                // Cross Platform New Line Character.
+                fileContent = fileContent.Replace("\n", Environment.NewLine);
+            }
             fileContent = fileContent.Replace("#SCRIPTNAME#", filename);
             // Variables
             string start = "";
@@ -179,8 +184,20 @@ public class BlocklyPlayground : ScriptableObject
             var regex = new System.Text.RegularExpressions.Regex(System.Text.RegularExpressions.Regex.Escape("#NOTRIM#"));
             var newText = regex.Replace(fileContent, start, 1); // Start Func.
             // Update - Replace 2nd NOTRIM with generated code.
+            // If our generated code contains come kind of function e.g. void *xxx*() where *xxx* can be *Update*...
+            if(EditorGUIUtility.systemCopyBuffer.Contains("void ") &&
+                EditorGUIUtility.systemCopyBuffer.Contains("()") &&
+                !EditorGUIUtility.systemCopyBuffer.Contains("void Start()"))
+            {
+                //... make room by getting rid of the Update func entirely within the template.
+                //... although we need somewhere to paste our clipboard.
+                newText = newText.Replace(string.Format("" +
+                    "// Update is called once per frame{0}\tvoid Update () {{{0}\t\t#NOTRIM#{0}\t}}"
+                    , Environment.NewLine), "#NOTRIM#");
+            }
             string tabbedClipboard = EditorGUIUtility.systemCopyBuffer.Replace(Environment.NewLine, Environment.NewLine + "\t\t");
             fileContent = newText.Replace("#NOTRIM#", tabbedClipboard);
+            fileContent = fileContent.Replace("rigidbody", "rb"); //RECODE: Although rb is a special case, I don't like this...
 
             //----------------------------------------------
             // Include our comments at the top of the file.
@@ -199,13 +216,13 @@ public class BlocklyPlayground : ScriptableObject
     /// e.g. fileContent = GenerateVariables(fileContent);
     /// </summary>
     /// <param name="a_fileContent">fileContent</param>
-    /// <returns></returns>
+    /// <returns>Variables for Variable Declaration and Start Func.</returns>
     static string GenerateVariables(string a_fileContent, ref string start)
     {
         string variables = "";
 
         // Add components for physics
-        // TODO: find a way to populate this list.
+        // TODO: find a way to populate this array.
         string[] components = new string[] { "Rigidbody" }; //, "BoxCollider"
         System.Collections.Generic.List<string> args = new System.Collections.Generic.List<string>(3);
         for (int i = 0; i < components.Length; i++)
@@ -251,8 +268,9 @@ public class BlocklyPlayground : ScriptableObject
             a_fileContent = a_fileContent.Replace("public class", stringBuilder.ToString());
         }
 
-        // TODO: Insert variables based on ex.
-        string[] vars = new string[] { "float foo = 1.0f;", "int bar = 0;" };
+        // Adds any other variables we'd like to the variable declaration. 
+        //TODO: Populate this array somehow. Insert variables based on ex.
+        string[] vars = new string[] { "" }; //{ "float foo = 1.0f;", "int bar = 0;" };
         for (int i = 0; i < vars.Length; i++)
         {
             variables += string.Format("\t{0}" + Environment.NewLine, vars[i]);
@@ -328,128 +346,5 @@ public class BlocklyPlayground : ScriptableObject
                 a_path,
                 200, 450, 800, 600 //int minWidth, int minHeight, int maxWidth, int maxHeight
             });
-    }
-
-    public void OnDownloadProgress(string id, string message, ulong bytes, ulong total)
-    {
-        this.InvokeJSMethod("document.AssetStore.pkgs", "OnDownloadProgress", new object[]
-        {
-                id,
-                message,
-                bytes,
-                total
-        });
-    }
-
-#region Serialisation
-    //this.InvokeJSMethod("document.AssetStore.login", "logout", new object[0]);
-    //https://blockly-demo.appspot.com/static/tests/playground.html toXML()
-    public void ExportToXML()
-    {
-        this.InvokeJSMethod("document", "toXML", new object[0]);
-        Debug.Log("To XML");
-        //TODO: JSONProxyMgr?
-    }
-
-    public void ImportFromXML()
-    {
-        this.InvokeJSMethod("document", "fromXML", new object[0]);
-        Debug.Log("From XML");
-    }
-
-    //JavaScript, Python, PHP, Lua, Dart
-    public void ToCode(string a_lang)
-    {
-        this.InvokeJSMethod("document", "toCode", new object[]
-            {
-                a_lang
-            });
-        Debug.LogFormat("Translated to: {0}.", a_lang);
-    }
-
-    //TODO: get either output or textarea from taChange
-    // Disable the "Import from XML" button if the XML is invalid.
-    // Preserve text between page reloads.
-    public void taChange()
-    {
-        //XmlDocument document = new XmlDocument();
-        Application.ExternalCall("document.getElementById('importExport')");
-        /*var textarea = document.getElementById("importExport");
-        if (sessionStorage)
-        {
-            sessionStorage.setItem("textarea", textarea.value);
-        }
-        var valid = true;
-        try
-        {
-            Blockly.Xml.textToDom(textarea.value);
-        }
-        catch (e)
-        {
-            valid = false;
-        }
-        document.getElementById("import").disabled = !valid;*/
-    }
-#endregion
-
-    /*function GetUserName()
-    {
-        if (document.getElementById("fw-member-presence").firstChild.innerText != null)
-        {
-            var unity = GetUnity();
-            unity.SendMessage("WebPhone", "PickUp", document.getElementById("fw-member-presence").firstChild.innerText);
-        }
-    }
-
-    <head> <title>Unity Web Player - comm</title> 
-        <script type = "text/javascript" language="javascript"> 
-        <!-- function SaySomethingToUnity()
-    { document.getElementById("UnityContent").SendMessage("MyObject", "MyFunction", 
-        "Hello from a web page!"); } --> </script>*/
-    private void InvokeJSMethod(string objectName, string name, params object[] args)
-    {
-        if (webView != null) //TODO: uncomment!
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append(objectName);
-            stringBuilder.Append('.');
-            stringBuilder.Append(name);
-            stringBuilder.Append('(');
-            bool flag = true;
-            for (int i = 0; i < args.Length; i++)
-            {
-                object obj = args[i];
-                if (!flag)
-                {
-                    stringBuilder.Append(',');
-                }
-                bool flag2 = obj is string;
-                if (flag2)
-                {
-                    stringBuilder.Append('"');
-                }
-                stringBuilder.Append(obj);
-                if (flag2)
-                {
-                    stringBuilder.Append('"');
-                }
-                flag = false;
-            }
-            stringBuilder.Append(");");
-            //this.webView.ExecuteJavascript(stringBuilder.ToString());
-
-            //
-            var flags = BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy;
-            var webViewT = webView as Type;
-            var methodInfo = webViewT.GetMethod("ExecuteJavascript", flags);
-            methodInfo = methodInfo.MakeGenericMethod(webViewT);
-
-            methodInfo.Invoke(
-                webView,
-                new object[]
-                {
-                stringBuilder.ToString()
-                });
-        }
     }
 }

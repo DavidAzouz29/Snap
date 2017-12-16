@@ -16,7 +16,7 @@ public class PlayerBuild
 {
     public enum E_BASE_CLASS_STATE { };
 };
-public class PlayerController
+public class PlayerController0
 {
     public enum E_CLASS_STATE { };
 };
@@ -53,7 +53,7 @@ public class GameSettings : ScriptableObject
 		public string sPlayerTag; // name to display on scoreboard e.g. "Rocky Road"
         public Color Color;
         public PlayerBuild.E_BASE_CLASS_STATE eBaseClassState;
-        public PlayerController.E_CLASS_STATE eClassState;
+        public PlayerController0.E_CLASS_STATE eClassState;
 		public int iKills; // Kills for scoreboard and podium position
 		public int iDeaths; // Deaths for scoreboard
 		public bool isReady = false; // Used for Player Select

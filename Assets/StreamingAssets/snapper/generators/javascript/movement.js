@@ -155,22 +155,35 @@ Blockly.JavaScript['move_facing'] = function(block) {
   var value_directions = Blockly.JavaScript.valueToCode(block, 'directions', Blockly.JavaScript.ORDER_NONE);
   // TODO: Assemble JavaScript into code variable.
   var code = 'forward';
+  var sign = ''; // Forward or Backwards
   switch (dropdown_direction) {
     case 'Forward':
+    case 'Backwards':
       code = 'forward';
       break;
-      case 'Up':
-        code = 'up';
-        break;
-        case 'Right':
-          code = 'right';
-          break;
+    case 'Up':
+    case 'Down':
+      code = 'up';
+      break;
+    case 'Right':
+    case 'Left':
+      code = 'right';
       break;
     default:
       code = 'forward';
       break;
   }
-  code = 'Vector3.' + code;
+  switch (dropdown_direction) {
+    case 'Backwards':
+    case 'Down':
+    case 'Left':
+      sign = '-';
+      break;
+    default:
+      sign = '';
+      break;
+  }
+  code = sign + 'Vector3.' + code;
   if(value_directions != "")
   {
     code += ' * ' + value_directions;

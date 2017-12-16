@@ -114,7 +114,7 @@ Blockly.Blocks['move_facing'] = {
   init: function() {
     this.appendValueInput("directions")
         .setCheck(["Number", "Vector"])
-        .appendField(new Blockly.FieldDropdown([["Vec Forward","Forward"], ["Vec Up","Up"], ["Vec Right","Right"]]), "direction");
+        .appendField(new Blockly.FieldDropdown([["Vec Forward","Forward"], ["Vec Up","Up"], ["Vec Right","Right"], ["Vec Backwards","Backwards"], ["Vec Down","Down"], ["Vec Left","Left"]]), "direction");
     this.setOutput(true, "Vector");
     this.setColour(230);
  this.setTooltip("Select Direction for transform.");

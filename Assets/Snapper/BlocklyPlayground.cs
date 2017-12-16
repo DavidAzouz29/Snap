@@ -30,16 +30,12 @@ using System;
 using System.Reflection;
 using System.Text;
 using System.IO;
-using System.Linq;
-//using System.Xml;
-
-//typedef webView = WebView;
+//using System.Linq;
 
 public class BlocklyPlayground : ScriptableObject
 {
 
     static object webView;
-    //static Type webView;
     static Type webViewType;
 
     // LastSnapperComponent for GO Primitive
@@ -197,7 +193,9 @@ public class BlocklyPlayground : ScriptableObject
             }
             string tabbedClipboard = EditorGUIUtility.systemCopyBuffer.Replace(Environment.NewLine, Environment.NewLine + "\t\t");
             fileContent = newText.Replace("#NOTRIM#", tabbedClipboard);
-            fileContent = fileContent.Replace("rigidbody", "rb"); //RECODE: Although rb is a special case, I don't like this...
+            //RECODE: Although rb is a special case, I don't like this... camelCase?
+            fileContent = fileContent.Replace("rigidbody", "rb"); 
+            fileContent = fileContent.Replace("meshrenderer", "meshRenderer");
 
             //----------------------------------------------
             // Include our comments at the top of the file.
@@ -223,7 +221,7 @@ public class BlocklyPlayground : ScriptableObject
 
         // Add components for physics
         // TODO: find a way to populate this array.
-        string[] components = new string[] { "Rigidbody" }; //, "BoxCollider"
+        string[] components = new string[] { "Rigidbody", "MeshRenderer" }; //, "BoxCollider"
         System.Collections.Generic.List<string> args = new System.Collections.Generic.List<string>(3);
         for (int i = 0; i < components.Length; i++)
         {
@@ -269,8 +267,8 @@ public class BlocklyPlayground : ScriptableObject
         }
 
         // Adds any other variables we'd like to the variable declaration. 
-        //TODO: Populate this array somehow. Insert variables based on ex.
-        string[] vars = new string[] { "" }; //{ "float foo = 1.0f;", "int bar = 0;" };
+        //TODO: Populate this array somehow. List? Also, Insert variables based on ex?
+        string[] vars = new string[] { "public Color color;" }; //{ "float foo = 1.0f;", "int bar = 0;" };
         for (int i = 0; i < vars.Length; i++)
         {
             variables += string.Format("\t{0}" + Environment.NewLine, vars[i]);

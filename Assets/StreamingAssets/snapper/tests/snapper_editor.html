@@ -20,9 +20,10 @@
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/loops.js"></script>
 <script src="../generators/javascript/math.js"></script>
 <script src="../generators/javascript/movement.js"></script>
+<script src="../generators/javascript/physics.js"></script>
 <script src="../generators/javascript/text.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/lists.js"></script>
-<script src="https://blockly-demo.appspot.com/static/generators/javascript/colour.js"></script>
+<script src="../generators/javascript/colour.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/variables.js"></script>
 <script src="https://blockly-demo.appspot.com/static/generators/javascript/procedures.js"></script>
 <script src="https://blockly-demo.appspot.com/static/msg/messages.js"></script>
@@ -31,9 +32,10 @@
 <script src="https://blockly-demo.appspot.com/static/blocks/loops.js"></script>
 <script src="https://blockly-demo.appspot.com/static/blocks/math.js"></script>
 <script src="../blocks/movement.js"></script>
+<script src="../blocks/physics.js"></script>
 <script src="https://blockly-demo.appspot.com/static/blocks/text.js"></script>
 <script src="https://blockly-demo.appspot.com/static/blocks/lists.js"></script>
-<script src="https://blockly-demo.appspot.com/static/blocks/colour.js"></script>
+<script src="../blocks/colour.js"></script>
 <script src="https://blockly-demo.appspot.com/static/blocks/variables.js"></script>
 <script src="https://blockly-demo.appspot.com/static/blocks/procedures.js"></script>
 
@@ -140,6 +142,7 @@
       <block type="events_start"></block>
       <block type="events_awake"></block>
       <block type="events_update"></block>
+      <block type="events_fixed_update"></block>
       <block type="events_keyhold">
         <field name="KeyHold">W</field>
       </block>
@@ -326,7 +329,7 @@
         <field name="angle">90</field>
         <value name="Vector">
           <block type="move_facing">
-            <field name="direction">Forward</field>
+            <field name="direction">Up</field>
           </block>
         </value>
       </block>
@@ -354,6 +357,9 @@
         </block>
       </value>
     </block>
+    </category>
+    <category name="Physics" colour="#5ba55b">
+      <block type="physics_oncollisionenter"></block>
     </category>
     <category name="Text" colour="160">
       <block type="text"></block>
@@ -546,6 +552,15 @@
           </shadow>
         </value>
       </block>
+      <block type="color_color_to_unity">
+      <field name="color">#33cc00</field>
+    </block>
+    <block type="color_color_to_unity">
+      <field name="color">#33cc00</field>
+      <statement name="code">
+        <block type="color_material_color"></block>
+      </statement>
+    </block>
     </category>
     <sep></sep>
     <category name="Variables" colour="330" custom="VARIABLE"></category>

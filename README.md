@@ -8,10 +8,16 @@ Blockly for Unity Editor.
 1) Navigate to "Window/Snapper/Snapper Quick Tools".
 2) Navigate to "Window/Snapper/Snapper Editor".
 3) Start dragging and dropping blocks. Tip: Click the "Live Updates" toggle for generated code on the fly.
-4) Click "Live Updates" toggle OR "To JavaScript" when ready.
+4) Click "Live Updates" toggle OR "To C#" when ready.
 5) Click "Copy To Clipboard".
 6) Click the "C#" button in "Snapper QT" OR navigate to "Window/Snapper/Save/Save as C# Script". Describe your script in the filename. Tip: use Pascal Case e.g. PlayerMovement.
 7) Create a primitive by selecting your desired primitive from the dropdown. Then click on the "GameObject" button to add the latest Snapper script created to a primitive. Alternatively, right click in the hierarchy/ 3D Object/*choose your preference* e.g. Cube. Click "Add Component" and add your new script.
+8) Press Play to see your creation in action!
+
+## Features:
+- Drag-and-Drop coding for Unity!
+- GameObject button to start prototyping in minutes!
+- Assessment Wizard
 
 ## 3rd Party:
 - Blockly: https://github.com/google/blockly 

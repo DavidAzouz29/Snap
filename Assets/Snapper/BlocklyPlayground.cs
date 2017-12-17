@@ -123,11 +123,11 @@ public class BlocklyPlayground : ScriptableObject
         SaveToFile(".cs"); // File extension
     }
 
-    [MenuItem(snapperPath + "Save/Save as JS %#&j")]
+    /*[MenuItem(snapperPath + "Save/Save as JS %#&j")]
     public static void SaveAsJavaScript()
     {
         SaveToFile(".js"); // File extension
-    }
+    }*/
 
     static void SaveToFile(string a_ex)
     {

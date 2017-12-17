@@ -66,6 +66,7 @@ public class BlocklyPlayground : ScriptableObject
 
     #region SnapperWindows
     public const string snapperPath = "Window/Snapper/";
+    public const string snapperCodePath = "Snapper/Code/";
 
     //[EditorWindowTitle(title = "Snapper Editor", useTypeNameAsIconName = true)]
     [MenuItem(snapperPath + "Snapper Editor &s", priority = 2)]
@@ -130,7 +131,7 @@ public class BlocklyPlayground : ScriptableObject
 
     static void SaveToFile(string a_ex)
     {
-        string location = Path.Combine(Application.dataPath, "Snapper/Code/");
+        string location = Path.Combine(Application.dataPath, snapperCodePath);
         string filename = "SnapperCode";
 
         if (!Directory.Exists(location))

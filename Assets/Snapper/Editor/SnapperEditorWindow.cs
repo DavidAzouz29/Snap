@@ -9,6 +9,7 @@
 
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 public enum E_PRIMITIVE_STATE
 {
@@ -74,11 +75,18 @@ public class SnapperEditorWindow : EditorWindow
         {
             BlocklyPlayground.OpenSnapperEditor();
         }
+        // Two Buttons
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button(EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).GetStyle("Icon.Activation").normal.background))
+        {
+            AssessmentWizard.CreateWizard();
+        }
 
         if (GUILayout.Button(EditorGUIUtility.IconContent("LookDevSideBySide", "|Publish.")))
         {
             BlocklyPlayground.PublishTo();
         }
+        EditorGUILayout.EndHorizontal();
 
         if (GUILayout.Button(EditorGUIUtility.IconContent("renderdoc", "|Me.")))
         {
@@ -94,10 +102,10 @@ public class SnapperEditorWindow : EditorWindow
             BlocklyPlayground.SaveAsCSharp();
         }
 
-        if (GUILayout.Button(EditorGUIUtility.IconContent("js Script Icon", "|Save as JS.")))
+        /*if (GUILayout.Button(EditorGUIUtility.IconContent("js Script Icon", "|Save as JS.")))
         {
             BlocklyPlayground.SaveAsJavaScript();
-        }
+        }*/
 
         // Create primitive with our most recent Snapper script.
         EditorGUILayout.BeginVertical();

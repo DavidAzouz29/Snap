@@ -1,6 +1,6 @@
 [submodule "Blockly"]
-	path = /Assets/WebPlayerTemplates/blockly
+	path = Assets/WebPlayerTemplates/blockly
 	url = https://github.com/google/blockly
 [submodule "clipboard.js-master"]
-	path = /Assets/StreamingAssets/clipboard.js-master
+	path = Assets/StreamingAssets/clipboard.js-master
 	url = https://github.com/zenorocha/clipboard.js/

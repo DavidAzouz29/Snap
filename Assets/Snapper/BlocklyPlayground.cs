@@ -73,16 +73,8 @@ public class BlocklyPlayground : ScriptableObject
     public static void OpenSnapperEditor()
     {
         OpenWebViewEditorWindowTabs("Snapper Editor",
-            "file:///Assets/StreamingAssets/snapper/tests/snapper_editor.html");
+            "file:///Assets/StreamingAssets/snapper/tests/snapper_editor.php");
     }
-    /*
-    //[EditorWindowTitle(title = "Snapper Playground", useTypeNameAsIconName = true)]
-    [MenuItem(snapperPath + "Snapper Playground %#&s")]
-    static void OpenSnapperPlayground()
-    {
-        OpenWebViewEditorWindowTabs("Snapper Playground",
-            "file:///Assets/StreamingAssets/blockly_playground.html");
-    }*/
 
     //[EditorWindowTitle(title = "Scratch Playground", useTypeNameAsIconName = true)]
     [MenuItem(snapperPath + "Scratch Playground &#s")]
@@ -122,12 +114,6 @@ public class BlocklyPlayground : ScriptableObject
     {
         SaveToFile(".cs"); // File extension
     }
-
-    /*[MenuItem(snapperPath + "Save/Save as JS %#&j")]
-    public static void SaveAsJavaScript()
-    {
-        SaveToFile(".js"); // File extension
-    }*/
 
     static void SaveToFile(string a_ex)
     {
